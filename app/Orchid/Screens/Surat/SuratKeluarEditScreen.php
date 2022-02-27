@@ -290,15 +290,19 @@ class SuratKeluarEditScreen extends Screen
             ],
             [
                 'title' => 'Tanggal_surat',
-                'key' => 'no_surat',
+                'key' => 'tanggal_surat',
             ],
             [
                 'title' => 'Atas_nama',
-                'key' => 'atas_nama',
+                'key' => 'name',
             ],
             [
                 'title' => 'Jabatan_atas_nama',
-                'key' => 'jabatan_atas_nama',
+                'key' => 'jabatan',
+            ],
+            [
+                'title' => 'Singkatan_jabatan',
+                'key' => 'persingkat_jabatan',
             ],
         ];
 

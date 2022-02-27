@@ -23,7 +23,8 @@ class Agenda extends Model
      */
     protected $fillable = [
         'title',
-        'description'
+        'description',
+        'atribute',
     ];
 
     protected $dateFormat = 'Y-m-d H:i:s';
@@ -42,6 +43,7 @@ class Agenda extends Model
         'id',
         'title',
         'description',
+        'atribute',
     ];
 
     /**
@@ -53,6 +55,7 @@ class Agenda extends Model
         'id',
         'title',
         'description',
+        'atribute',
         'updated_at',
         'created_at',
     ];

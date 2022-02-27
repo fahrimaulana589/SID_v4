@@ -57,7 +57,7 @@ class SuratKeluarEditLayout extends Rows
                 ->title('Agenda')
                 ->fromModel(Agenda::class, 'title','id'),
 
-                Input::make('surat-keluar.no_surat')
+            Input::make('surat-keluar.no_surat')
                 ->title('No surat')
                 ->type('text')
                 ->required()
@@ -68,7 +68,7 @@ class SuratKeluarEditLayout extends Rows
                 ->required()
                 ->max(255)
                 ->rows(5),
-                Group::make(
+            Group::make(
                         $this->makeCheckBoxData()
                     )
                         ->alignEnd()

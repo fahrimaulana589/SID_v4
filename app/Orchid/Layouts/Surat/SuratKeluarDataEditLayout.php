@@ -3,6 +3,7 @@
 namespace App\Orchid\Layouts\Surat;
 
 use App\Models\Penduduk;
+use App\Models\PerangkatDesa;
 use Carbon\Carbon;
 use DateTime;
 use Orchid\Screen\Field;
@@ -37,32 +38,39 @@ class SuratKeluarDataEditLayout extends Rows
                 ->title('No surat')
                 ->value($no_surat)
                 ->required()
-                ->readonly()
                 ->max(255),
             DateTimer::make('surat_keluar_data.tanggal_surat')
                 ->title('Tanggal surat')
                 ->value($tanggal_surat)
                 ->placeholder('Masukan tanggal')
                 ->required(),
-            Input::make('surat_keluar_data.atas_nama')
+
+            Relation::make('surat_keluar_data.id_perangkat_desa')
                 ->title('Atas nama')
                 ->required()
-                ->max(255),
-            Select::make('surat_keluar_data.jabatan_atas_nama')
-                ->title('Jabatan')
-                ->required()
-                ->options(
-                    [
-                        'Kepala Desa' => 'Kepala Desa Karanganyar'
-                    ]
-                ),
+                ->fromModel(PerangkatDesa::class,'name','id'),
+
             Relation::make('surat_keluar_data.id_penduduk')
                 ->title('Penduduk')
                 ->required()
                 ->fromModel(Penduduk::class,'NIK','id')
         ];
 
+        $exist = $this->query->get('exist');
+
         $data = $this->query->get('surat_keluar')->atribute;
+
+        if($exist){
+            $data_surat = $this->query->get('surat_keluar_data')->atribute;
+
+            $data_surat = str_replace("'",'"',$data_surat);
+
+            $data_surat =  json_decode($data_surat);
+            $data_surat =  get_object_vars($data_surat->data);
+        }
+        else{
+            $data_surat = [];
+        }
 
         $data = str_replace("'",'"',$data);
 
@@ -71,12 +79,17 @@ class SuratKeluarDataEditLayout extends Rows
         $data_key = array_keys($data);
 
         foreach($data_key as $item){
+            $value = '';
+            if(array_key_exists($data[$item]->key,$data_surat)){
+                $value = $data_surat[$data[$item]->key]->value;
+            };
 
             if($data[$item]->type == 'multitext'){
                 array_push($field,
                 TextArea::make("surat_keluar_data.atribute.data.{$data[$item]->key}")
                     ->title($item)
                     ->required()
+                    ->value($value)
                     ->rows(5)
                     ->max(255));
             }
@@ -85,6 +98,7 @@ class SuratKeluarDataEditLayout extends Rows
                 Input::make("surat_keluar_data.atribute.data.{$data[$item]->key}")
                     ->title($item)
                     ->required()
+                    ->value($value)
                     ->max(255));
             }
         }
@@ -107,6 +121,22 @@ class SuratKeluarDataEditLayout extends Rows
 
             return $data;
         };
+
+        $tahun = Carbon::now()->year;
+        $data_terakhir = $surat_keluar->datas->last()->no_surat;
+        $data_terakhir = explode('/',$data_terakhir);
+        $tahun_trakhir = $data_terakhir[2];
+
+        if($tahun > $tahun_trakhir){
+            $no = 1;
+
+            $data = "{$surat_keluar->no_surat}/{$no}/{$tahun}";
+
+            return $data;
+        };
+
+        $no = (int) $data_terakhir[1] + 1;
+        $data = "{$surat_keluar->no_surat}/{$no}/{$tahun}";
 
         return $data;
     }

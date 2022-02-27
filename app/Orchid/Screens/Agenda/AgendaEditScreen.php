@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\agenda;
 use App\Models\Agenda;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
+use App\Models\AtributeData;
 use Illuminate\Http\Request;
 use App\Service\AgendaService;
 use Orchid\Screen\Actions\Button;
@@ -44,6 +45,7 @@ class AgendaEditScreen extends Screen
         return [
             'agenda'       => $agenda,
             'permission' => $agenda->getStatusPermission(),
+            'data_atribute' => AtributeData::all()
         ];
     }
 
@@ -100,7 +102,7 @@ class AgendaEditScreen extends Screen
     }
 
     public function save(Agenda $agenda,Request $request){
-
+        $datas_agenda = AtributeData::all();
 
         $data = $request->validate(
             [
@@ -110,8 +112,23 @@ class AgendaEditScreen extends Screen
                 'agenda.description' => [
                     'required'
                 ],
+                'agenda.atribute.data.*' => [
+
+                ],
             ]
         );
+
+        $data['agenda']['atribute']['data'] = collect($data['agenda']['atribute']['data'])
+        ->map(function($data,$key) use ($datas_agenda){
+
+            return[
+                'key' => $data,
+                'type' => $datas_agenda->where('key','=',$data)->first()->type
+            ];
+
+        })->toArray();
+
+        $data['agenda']['atribute'] = json_encode($data['agenda']['atribute']);
 
         $data['id'] = null;
 

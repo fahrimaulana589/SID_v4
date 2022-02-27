@@ -15,16 +15,7 @@ class DataAgenda extends Model
 
     protected $fillable = [
         'id_agenda',
-        'name',
-        'place_of_birth',
-        'date_of_birth',
-        'gender',
-        'profession',
-        'address',
-        'religion',
-        'education',
-        'status',
-        'necessity'
+
     ];
 
     protected $dateFormat = 'Y-m-d H:i:s';
@@ -41,14 +32,7 @@ class DataAgenda extends Model
      */
     protected $allowedFilters = [
         'id_agenda',
-        'name',
-        'place_of_birth',
-        'date_of_birth',
-        'gender','profession',
-        'address','religion',
-        'education',
-        'status',
-        'necessity'
+
     ];
 
     /**
@@ -58,14 +42,7 @@ class DataAgenda extends Model
      */
     protected $allowedSorts = [
         'id_agenda',
-        'name',
-        'place_of_birth',
-        'date_of_birth',
-        'gender','profession',
-        'address','religion',
-        'education',
-        'status',
-        'necessity'
+
     ];
 
 

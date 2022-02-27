@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Orchid\Screen\AsSource;
 use Orchid\Access\RoleAccess;
 use Orchid\Metrics\Chartable;
 use Orchid\Filters\Filterable;
+use Orchid\Attachment\Attachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SuratKeluarData extends Model
 {
-    use RoleAccess, Filterable, AsSource, Chartable, HasFactory;
+    use RoleAccess, Filterable, AsSource, Chartable, HasFactory, Attachable;
 
 
     /**
@@ -22,12 +24,9 @@ class SuratKeluarData extends Model
     protected $fillable = [
         'id_surat_keluar',
         'id_penduduk',
-        'title',
+        'id_perangkat_desa',
         'no_surat',
         'tanggal_surat',
-        'atas_nama',
-        'jabatan_atas_nama',
-        'description',
         'atribute',
     ];
 
@@ -47,12 +46,9 @@ class SuratKeluarData extends Model
         'id',
         'id_surat_keluar',
         'id_penduduk',
-        'title',
+        'id_perangkat_desa',
         'no_surat',
         'tanggal_surat',
-        'atas_nama',
-        'jabatan_atas_nama',
-        'description',
         'atribute',
     ];
 
@@ -65,12 +61,9 @@ class SuratKeluarData extends Model
         'id',
         'id_surat_keluar',
         'id_penduduk',
-        'title',
+        'id_perangkat_desa',
         'no_surat',
         'tanggal_surat',
-        'atas_nama',
-        'jabatan_atas_nama',
-        'description',
         'atribute',
         'updated_at',
         'created_at',
@@ -79,5 +72,11 @@ class SuratKeluarData extends Model
     public function suratKeluar(){
 
         return $this->belongsTo(SuratKeluar::class,'id_surat_keluar');
+    }
+
+    public function getFullDate(){
+        $date = Carbon::parse($this->attributes['tanggal_surat'])->isoFormat('dddd, D MMMM YYYY');
+
+        return "{$date}";
     }
 }

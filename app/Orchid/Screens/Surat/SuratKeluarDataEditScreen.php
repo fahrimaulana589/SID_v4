@@ -44,6 +44,7 @@ class SuratKeluarDataEditScreen extends Screen
         }
 
         return [
+            'exist' =>  $this->exist,
             'surat_keluar' => $suratKeluar,
             'surat_keluar_data' => $surat_data_keluar,
         ];
@@ -107,19 +108,12 @@ class SuratKeluarDataEditScreen extends Screen
                 'surat_keluar_data.tanggal_surat' => [
                     'required'
                 ],
-
-                'surat_keluar_data.atas_nama' => [
-                    'required'
-                ],
-
-                'surat_keluar_data.jabatan_atas_nama' => [
-                    'required'
-                ],
-
                 'surat_keluar_data.id_penduduk' => [
                     'required'
                 ],
-
+                'surat_keluar_data.id_perangkat_desa' => [
+                    'required'
+                ],
                 'surat_keluar_data.atribute.data' => [
                     'required'
                 ],
@@ -141,11 +135,9 @@ class SuratKeluarDataEditScreen extends Screen
 
         $data['surat_keluar_data']['atribute'] = json_encode($data['surat_keluar_data']['atribute']);
 
-        ddd($data['surat_keluar_data']['atribute']);
-
         $data['surat_keluar_data']['id_surat_keluar'] = $suratKeluar->id;
 
-        $surat_data_keluar = SuratKeluarData::create($data['surat_keluar_data']);
+        SuratKeluarData::create($data['surat_keluar_data']);
 
         Toast::info('Data berhasil di simpan');
 
@@ -156,15 +148,40 @@ class SuratKeluarDataEditScreen extends Screen
 
         $data = $request->validate(
             [
-                'surat_keluar_data.title' => [
+                'surat_keluar_data.no_surat' => [
                     'required'
                 ],
-                'surat_keluar_data.description' => [
+                'surat_keluar_data.tanggal_surat' => [
                     'required'
                 ],
-                ''
+                'surat_keluar_data.id_penduduk' => [
+                    'required'
+                ],
+                'surat_keluar_data.id_perangkat_desa' => [
+                    'required'
+                ],
+                'surat_keluar_data.atribute.data' => [
+                    'required'
+                ],
+
             ]
         );
+
+        $datas_surat = AtributeData::all();
+
+        $data['surat_keluar_data']['atribute']['data'] = collect($data['surat_keluar_data']['atribute']['data'])
+        ->map(function($data,$key) use ($datas_surat){
+
+            return[
+                'key' => $key,
+                'type' => $datas_surat->where('key','=',$key)->first()->type,
+                'value' => $data
+            ];
+        })->toArray();
+
+        $data['surat_keluar_data']['atribute'] = json_encode($data['surat_keluar_data']['atribute']);
+
+        $data['surat_keluar_data']['id_surat_keluar'] = $suratKeluar->id;
 
         $surat_data_keluar->fill($data['surat_keluar_data'])->save();
 

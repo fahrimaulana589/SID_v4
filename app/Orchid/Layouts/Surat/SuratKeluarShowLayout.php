@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts\Surat;
 
+use Carbon\Carbon;
 use Orchid\Screen\TD;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
@@ -29,17 +30,20 @@ class SuratKeluarShowLayout extends Table
     protected function columns(): array
     {
         return [
-            TD::make('title','Judul')
+            TD::make('no_surat','No Surat')
                 ->sort()
                 ->filter(
                     Input::class
                 ),
 
-            TD::make('description','Deskripsi')
+            TD::make('tanggal_surat','Tanggal Surat')
                 ->sort()
                 ->filter(
                     Input::class
-                ),
+                )
+                ->render(function($data){
+                    return $data->getFullDate();
+                }),
 
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)
