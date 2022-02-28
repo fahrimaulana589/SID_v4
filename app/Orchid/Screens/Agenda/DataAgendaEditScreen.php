@@ -6,14 +6,15 @@ use App\Models\Agenda;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use App\Models\DataAgenda;
+use App\Models\AtributeData;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
 use App\Orchid\Layouts\Agenda\AgendaEditLayout;
 use App\Orchid\Layouts\Agenda\AgendaDescriptionLayout;
-use App\Orchid\Layouts\Agenda\DataAgendaKeperluanLayout;
 use App\Orchid\Layouts\Agenda\DataAgendaPendudukLayout;
+use App\Orchid\Layouts\Agenda\DataAgendaKeperluanLayout;
 
 class DataAgendaEditScreen extends Screen
 {
@@ -42,7 +43,9 @@ class DataAgendaEditScreen extends Screen
         }
 
         return [
+            'exist' => $this->exist,
             'dataAgenda'       => $dataAgenda,
+            'agenda' => $agenda,
             'permission' => $dataAgenda->getStatusPermission(),
         ];
     }
@@ -77,8 +80,8 @@ class DataAgendaEditScreen extends Screen
     {
         return [
             Layout::block(DataAgendaPendudukLayout::class)
-                ->title('Data Penduduk')
-                ->description('Silah kan masukan data penduduk')
+                ->title('Data Agenda')
+                ->description('Silah kan masukan data agenda')
                 ->commands(
                     Button::make('Simpan')
                         ->type(Color::DEFAULT())
@@ -87,8 +90,8 @@ class DataAgendaEditScreen extends Screen
                         ->method('save')
                 ),
             Layout::block(DataAgendaKeperluanLayout::class)
-                ->title('Keperluan')
-                ->description('Silahkan masukan keperluan')
+                ->title('Data Tambahan')
+                ->description('Silahkan masukan data tambahan')
                 ->commands(
                     Button::make('Simpan')
                         ->type(Color::DEFAULT())
@@ -103,53 +106,46 @@ class DataAgendaEditScreen extends Screen
 
         $data = $request->validate(
             [
-                'dataAgenda.name' => [
+                'dataAgenda.no_surat' => [
                     'required'
                 ],
-                'dataAgenda.place_of_birth' => [
+                'dataAgenda.id_penduduk' => [
                     'required'
                 ],
-                'dataAgenda.date_of_birth' =>[
+                'dataAgenda.atribute.data.*' => [
                     'required'
                 ],
-                'dataAgenda.gender' =>[
-                    'required'
-                ],
-                'dataAgenda.address' =>[
-                    'required'
-                ],
-                'dataAgenda.education' =>[
-                    'required'
-                ],
-                'dataAgenda.status' =>[
-                    'required'
-                ],
-                'dataAgenda.profession' =>[
-                    'required'
-                ],
-                'dataAgenda.religion' =>[
-                    'required'
-                ],
-                'dataAgenda.necessity' =>[
-                    'required'
-                ]
             ]
         );
 
 
         $data['id'] = null;
-        $data['id_agenda'] = null;
+        $data['dataAgenda']['id_agenda'] = $agenda->id;
+        $data['dataAgenda']['id_data_surat_keluar'] = 0;
 
-
-        if($agenda->exists || $dataAgenda->exists){
+        if($dataAgenda->exists){
             $data['id'] = $dataAgenda->id;
-            $data['id_agenda'] = $agenda->id;
+            $data['dataAgenda']['id_agenda'] = $agenda->id;
+            $data['dataAgenda']['id_data_surat_keluar'] = $dataAgenda->id_data_surat_keluar;
         }
 
+        $datas_surat = AtributeData::all();
+
+        $data['dataAgenda']['atribute']['data'] = collect($data['dataAgenda']['atribute']['data'])
+        ->map(function($data,$key) use ($datas_surat){
+
+            return[
+                'key' => $key,
+                'type' => $datas_surat->where('key','=',$key)->first()->type,
+                'value' => $data
+            ];
+        })->toArray();
+
+        $data['dataAgenda']['atribute'] = json_encode($data['dataAgenda']['atribute']);
 
         DataAgenda::updateOrCreate([
             'id' => $data['id'],
-            'id_agenda' => $data['id_agenda']
+            'id_agenda' => $data['dataAgenda']['id_agenda']
         ],$data['dataAgenda']);
 
         Toast::info(__('Data agenda telah tersimpan.'));
@@ -158,5 +154,5 @@ class DataAgendaEditScreen extends Screen
             return redirect()->route('platform.agendas.show',$agenda);
         }
     }
-    
+
 }

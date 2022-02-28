@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\DataAgenda;
 use Orchid\Screen\AsSource;
 use Orchid\Access\RoleAccess;
 use Orchid\Metrics\Chartable;
@@ -67,5 +68,12 @@ class SuratKeluar extends Model
 
         return $this->hasMany(SuratKeluarData::class,'id_surat_keluar');
     }
+
+    public function agenda(){
+
+        return $this->belongsTo(Agenda::class,'id_agenda');
+    }
+
+    
 
 }

@@ -30,19 +30,7 @@ class DataAgendaListLayout extends Table
     protected function columns(): array
     {
         return [
-            TD::make('name','Nama')
-                ->sort()
-                ->filter(Input::class),
-            TD::make('place_of_birth','Tempat lahir')
-                ->sort()
-                ->filter(Input::class),
-            TD::make('date_of_birth','Tanggal lahir')
-                ->sort()
-                ->filter(Input::class),
-            TD::make('address','Alamat')
-                ->sort()
-                ->filter(Input::class),
-            TD::make('necessity','Keperluan')
+            TD::make('no_surat','No surat')
                 ->sort()
                 ->filter(Input::class),
             TD::make('Action')

@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Surat;
 use Orchid\Screen\Screen;
 use App\Models\SuratKeluar;
 use App\Models\AtributeData;
+use App\Models\DataAgenda;
 use Illuminate\Http\Request;
 use App\Models\SuratKeluarData;
 use Orchid\Screen\Actions\Link;
@@ -14,6 +15,7 @@ use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast as FacadesToast;
 use App\Orchid\Layouts\Surat\SuratKeluarEditLayout;
 use App\Orchid\Layouts\Surat\SuratKeluarDataEditLayout;
+use App\Orchid\Layouts\Agenda\DataAgendaKeperluanLayout;
 
 class SuratKeluarDataEditScreen extends Screen
 {
@@ -36,6 +38,7 @@ class SuratKeluarDataEditScreen extends Screen
     {
 
         $this->suratKeluar = $suratKeluar;
+
         $this->name = $suratKeluar->title;
         $this->exist = $surat_data_keluar->exists;
 
@@ -45,6 +48,8 @@ class SuratKeluarDataEditScreen extends Screen
 
         return [
             'exist' =>  $this->exist,
+            'agenda' => $suratKeluar->agenda,
+            'dataAgenda' => $surat_data_keluar->agendaData,
             'surat_keluar' => $suratKeluar,
             'surat_keluar_data' => $surat_data_keluar,
         ];
@@ -93,13 +98,20 @@ class SuratKeluarDataEditScreen extends Screen
                         ->icon('check')
                         ->method('edit')
                         ->canSee($this->exist)
+                ),
+            Layout::block(DataAgendaKeperluanLayout::class)
+                ->title('Data Agenda')
+                ->description('Silahkan masukan data agenda')
+                ->commands(
+                    Button::make('Simpan')
+                        ->icon('check')
+                        ->canSee($this->exist)
+                        ->method('edit')
                 )
         ];
     }
 
     public function save(SuratKeluar $suratKeluar,Request $request){
-
-
         $data = $request->validate(
             [
                 'surat_keluar_data.no_surat' => [
@@ -121,6 +133,14 @@ class SuratKeluarDataEditScreen extends Screen
             ]
         );
 
+        $dataAgenda = $request->validate(
+            [
+                'dataAgenda.atribute.data' => [
+                    'required'
+                ],
+            ]
+        );
+
         $datas_surat = AtributeData::all();
 
         $data['surat_keluar_data']['atribute']['data'] = collect($data['surat_keluar_data']['atribute']['data'])
@@ -133,11 +153,30 @@ class SuratKeluarDataEditScreen extends Screen
             ];
         })->toArray();
 
+        $dataAgenda['dataAgenda']['atribute']['data'] = collect($dataAgenda['dataAgenda']['atribute']['data'])
+        ->map(function($data,$key) use ($datas_surat){
+
+            return[
+                'key' => $key,
+                'type' => $datas_surat->where('key','=',$key)->first()->type,
+                'value' => $data
+            ];
+        })->toArray();
+
+
         $data['surat_keluar_data']['atribute'] = json_encode($data['surat_keluar_data']['atribute']);
 
         $data['surat_keluar_data']['id_surat_keluar'] = $suratKeluar->id;
 
-        SuratKeluarData::create($data['surat_keluar_data']);
+        $surat = SuratKeluarData::create($data['surat_keluar_data']);
+
+        $dataAgenda['dataAgenda']['id_penduduk'] = $data['surat_keluar_data']['id_penduduk'];
+        $dataAgenda['dataAgenda']['id_agenda'] =  $suratKeluar->agenda->id;
+        $dataAgenda['dataAgenda']['no_surat'] = $data['surat_keluar_data']['no_surat'];
+        $dataAgenda['dataAgenda']['id_data_surat_keluar'] = $surat->id;
+        $dataAgenda['dataAgenda']['atribute'] = json_encode($dataAgenda['dataAgenda']['atribute']);
+
+        DataAgenda::create($dataAgenda['dataAgenda']);
 
         Toast::info('Data berhasil di simpan');
 
@@ -167,9 +206,27 @@ class SuratKeluarDataEditScreen extends Screen
             ]
         );
 
+        $dataAgenda = $request->validate(
+            [
+                'dataAgenda.atribute.data' => [
+                    'required'
+                ],
+            ]
+        );
+
         $datas_surat = AtributeData::all();
 
         $data['surat_keluar_data']['atribute']['data'] = collect($data['surat_keluar_data']['atribute']['data'])
+        ->map(function($data,$key) use ($datas_surat){
+
+            return[
+                'key' => $key,
+                'type' => $datas_surat->where('key','=',$key)->first()->type,
+                'value' => $data
+            ];
+        })->toArray();
+
+        $dataAgenda['dataAgenda']['atribute']['data'] = collect($dataAgenda['dataAgenda']['atribute']['data'])
         ->map(function($data,$key) use ($datas_surat){
 
             return[
@@ -184,6 +241,14 @@ class SuratKeluarDataEditScreen extends Screen
         $data['surat_keluar_data']['id_surat_keluar'] = $suratKeluar->id;
 
         $surat_data_keluar->fill($data['surat_keluar_data'])->save();
+
+        $dataAgenda['dataAgenda']['id_penduduk'] = $data['surat_keluar_data']['id_penduduk'];
+        $dataAgenda['dataAgenda']['id_agenda'] =  $suratKeluar->agenda->id;
+        $dataAgenda['dataAgenda']['no_surat'] = $data['surat_keluar_data']['no_surat'];
+        $dataAgenda['dataAgenda']['id_data_surat_keluar'] = $surat_data_keluar->id;
+        $dataAgenda['dataAgenda']['atribute'] = json_encode($dataAgenda['dataAgenda']['atribute']);
+
+        $data = $surat_data_keluar->agendaData->fill($dataAgenda['dataAgenda'])->save();
 
         Toast::info('Data berhasil di simpan');
 

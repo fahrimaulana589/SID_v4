@@ -79,4 +79,9 @@ class SuratKeluarData extends Model
 
         return "{$date}";
     }
+
+    public function agendaData(){
+
+        return $this->hasOne(DataAgenda::class,'id_data_surat_keluar','id');
+    }
 }

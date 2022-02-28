@@ -8,6 +8,7 @@ use Orchid\Support\Color;
 use App\Models\AtributeData;
 use Illuminate\Http\Request;
 use App\Service\AgendaService;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Toast;
@@ -57,6 +58,9 @@ class AgendaEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+            Link::make('Data')
+                ->icon('info')
+                ->route('platform.datas'),
 
             Button::make(__('Remove'))
                 ->icon('trash')

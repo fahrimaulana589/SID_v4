@@ -2,8 +2,10 @@
 
 namespace App\Orchid\Layouts\Agenda;
 
+use App\Models\Penduduk;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\TextArea;
@@ -18,61 +20,16 @@ class DataAgendaPendudukLayout extends Rows
     protected function fields(): array
     {
         return [
-            Input::make('dataAgenda.name')
+            Input::make('dataAgenda.no_surat')
                 ->type('text')
                 ->max(255)
                 ->required()
-                ->title('Nama')
+                ->title('No surat')
                 ->placeholder('Masukan nama'),
-            Input::make('dataAgenda.place_of_birth')
-                ->type('text')
-                ->max(255)
+            Relation::make('dataAgenda.id_penduduk')
+                ->fromModel(Penduduk::class,'NIK')
+                ->title('Penduduk')
                 ->required()
-                ->title('Tempat')
-                ->placeholder('Masukan tempat lahir'),
-            Input::make('dataAgenda.date_of_birth')
-                ->type('date')
-                ->required()
-                ->title('Tanggal lahir'),
-            Select::make('dataAgenda.gender')
-                ->options([
-                    'pria'   => 'Pria',
-                    'wanita' => 'Wanita',
-                ])
-                ->required()
-                ->title('Pilih jenis kelamin'),
-            Input::make('dataAgenda.profession')
-                ->type('text')
-                ->max(255)
-                ->required()
-                ->title('Pekerjaan')
-                ->placeholder('Masukan pekerjaan'),
-            Input::make('dataAgenda.religion')
-                ->type('text')
-                ->max(255)
-                ->required()
-                ->title('Agama')
-                ->placeholder('Masukan agama'),
-            TextArea::make('dataAgenda.address')
-                ->type('text')
-                ->max(255)
-                ->required()
-                ->title('Alamat')
-                ->placeholder('Masukan alamat')
-                ->rows('7'),
-            Input::make('dataAgenda.education')
-                ->type('text')
-                ->max(255)
-                ->required()
-                ->title('Pendidikan')
-                ->placeholder('Masukan pendidikan'),
-            Input::make('dataAgenda.status')
-                ->type('text')
-                ->max(255)
-                ->required()
-                ->title('Status')
-                ->placeholder('Masukan status'),
-
         ];
     }
 }

@@ -15,7 +15,10 @@ class DataAgenda extends Model
 
     protected $fillable = [
         'id_agenda',
-
+        'id_data_surat_keluar',
+        'atribute',
+        'id_penduduk',
+        'no_surat',
     ];
 
     protected $dateFormat = 'Y-m-d H:i:s';
