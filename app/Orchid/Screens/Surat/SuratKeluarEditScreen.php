@@ -255,7 +255,7 @@ class SuratKeluarEditScreen extends Screen
                                     "name_ayah",
                                     "name_ibu",
                                     "Nama",
-                                    "Tempa_lahir",
+                                    "Tempat_lahir",
                                     "Tanggal_lahir",
                                     "Jenis_kelamin",
                                     "Golongan_darah",

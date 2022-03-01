@@ -1,14 +1,19 @@
 <?php
 
+use App\Http\Controllers\SuratKeluarController;
+use App\Models\SuratKeluar;
 use Tabuna\Breadcrumbs\Trail;
+use App\Models\SuratKeluarData;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use PhpOffice\PhpWord\TemplateProcessor;
 use App\Orchid\Screens\Surat\SuratEditScreen;
-use App\Orchid\Screens\Surat\SuratKeluarDataEditScreen;
 use App\Orchid\Screens\Surat\SuratListScreen;
 use App\Orchid\Screens\Surat\SuratShowScreen;
 use App\Orchid\Screens\Surat\SuratKeluarEditScreen;
 use App\Orchid\Screens\Surat\SuratKeluarListScreen;
 use App\Orchid\Screens\Surat\SuratKeluarShowScreen;
+use App\Orchid\Screens\Surat\SuratKeluarDataEditScreen;
 
 Route::screen('surat-masuks',SuratListScreen::class)
     ->name('platform.surat-masuks')
@@ -90,6 +95,5 @@ Route::screen('surat-keluars/{surat_keluar}/datas/{data}/edit',SuratKeluarDataEd
             ->push('Create',route('platform.surat-keluars.datas.edit',[$surat_keluar,$data]));
     });
 
-
-
+Route::get('surat-keluars/{surat_keluar}/datas/{data}/download',[SuratKeluarController::class,'download'])->name('download');
 

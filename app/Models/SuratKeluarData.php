@@ -84,4 +84,9 @@ class SuratKeluarData extends Model
 
         return $this->hasOne(DataAgenda::class,'id_data_surat_keluar','id');
     }
+
+    public function penduduk(){
+
+        return $this->belongsTo(Penduduk::class,'id_penduduk');
+    }
 }

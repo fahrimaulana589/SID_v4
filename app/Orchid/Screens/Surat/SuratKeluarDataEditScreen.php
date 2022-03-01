@@ -3,15 +3,16 @@
 namespace App\Orchid\Screens\Surat;
 
 use Orchid\Screen\Screen;
+use App\Models\DataAgenda;
 use App\Models\SuratKeluar;
 use App\Models\AtributeData;
-use App\Models\DataAgenda;
 use Illuminate\Http\Request;
 use App\Models\SuratKeluarData;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
+use PhpOffice\PhpWord\TemplateProcessor;
 use Orchid\Support\Facades\Toast as FacadesToast;
 use App\Orchid\Layouts\Surat\SuratKeluarEditLayout;
 use App\Orchid\Layouts\Surat\SuratKeluarDataEditLayout;
@@ -28,6 +29,8 @@ class SuratKeluarDataEditScreen extends Screen
 
     public $suratKeluar;
 
+    public $surat_data_keluar;
+
     public $exist = false;
     /**
      * Query data.
@@ -38,12 +41,12 @@ class SuratKeluarDataEditScreen extends Screen
     {
 
         $this->suratKeluar = $suratKeluar;
-
+        $this->surat_data_keluar  = $surat_data_keluar;
         $this->name = $suratKeluar->title;
         $this->exist = $surat_data_keluar->exists;
 
         if($this->exist){
-            $surat_data_keluar = $suratKeluar->datas()->findOrFail($surat_data_keluar->id);
+            $this->surat_data_keluar = $suratKeluar->datas()->findOrFail($surat_data_keluar->id);
         }
 
         return [
@@ -51,7 +54,7 @@ class SuratKeluarDataEditScreen extends Screen
             'agenda' => $suratKeluar->agenda,
             'dataAgenda' => $surat_data_keluar->agendaData,
             'surat_keluar' => $suratKeluar,
-            'surat_keluar_data' => $surat_data_keluar,
+            'surat_keluar_data' =>  $this->surat_data_keluar ,
         ];
     }
 
@@ -74,6 +77,11 @@ class SuratKeluarDataEditScreen extends Screen
                 ->icon('check')
                 ->method('save')
                 ->canSee(!$this->exist),
+
+            Link::make('Download')
+                ->icon('check')
+                ->route('download',[$this->suratKeluar->id, $this->surat_data_keluar->id])
+                ->canSee($this->exist),
 
             Button::make('Simpan')
                 ->icon('check')
