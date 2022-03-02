@@ -116,7 +116,7 @@ class SuratKeluarEditScreen extends Screen
 
         $file = $request->validate(
             [
-                'surat-keluar.new_template' => [
+                'surat-keluar.newtemplate' => [
                     'mimes:docx'
                 ],
             ]
@@ -155,7 +155,7 @@ class SuratKeluarEditScreen extends Screen
 
         $surat = SuratKeluar::create($data['surat-keluar']);
 
-        $file = new File(group:"doct",file:$request->file('surat-keluar.new_template'));
+        $file = new File(group:"doct",file:$request->file('surat-keluar.newtemplate'));
 
         $attachment = $file->load();
 

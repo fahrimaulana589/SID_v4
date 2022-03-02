@@ -67,6 +67,7 @@ class SuratKeluarDataEditLayout extends Rows
 
             $data_surat =  json_decode($data_surat);
             $data_surat =  get_object_vars($data_surat->data);
+
         }
         else{
             $data_surat = [];

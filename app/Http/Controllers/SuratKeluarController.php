@@ -22,15 +22,24 @@ class SuratKeluarController extends Controller
         $templateProcessor = new TemplateProcessor($file);
 
         $penduduk = $this->penduduk($data_surat);
-
+        $dataTambahan = $this->dataTambahan($surat_keluar,$data_surat);
         $surat = $this->surat($surat_keluar,$data_surat);
 
         $templateProcessor->setValues($penduduk);
+        $templateProcessor->setValues($dataTambahan);
+        $templateProcessor->setValues($surat);
 
         $file = $templateProcessor->save();
 
         return response()->download($file,Carbon::now()." {$penduduk['Nama']}.docx");
     }
+    public function print(SuratKeluar $surat_keluar,$surat_data_keluar){
+
+        $url = route('download',[$surat_keluar->id, $surat_data_keluar]);
+        return redirect()->away("https://docs.google.com/viewerng/viewer?url={$url}");
+    }
+    
+    
 
     private function penduduk($data_surat){
 
@@ -81,7 +90,7 @@ class SuratKeluarController extends Controller
         return $penduduk;
     }
 
-    private function surat($surat_keluar,$data_surat){
+    private function dataTambahan($surat_keluar,$data_surat){
 
         $data_surat = $data_surat->atribute;
 
@@ -90,8 +99,40 @@ class SuratKeluarController extends Controller
         $data_surat =  json_decode($data_surat);
         $data_surat =  get_object_vars($data_surat->data);
 
-        dd($data_surat);
+        $data = $surat_keluar->atribute;
+        $data = str_replace("'",'"',$data);
 
+        $data =  json_decode($data);
+        $data =  get_object_vars($data->data);
+
+        $data = collect($data_surat)->flatMap(function($value,$key) use ($data) {
+            $data_key = array_keys($data);
+
+            $no = 0;
+            foreach ($data as $item){
+                if($item->key == $key){
+                    $key = $data_key[$no];
+                }
+                $no++;
+            }
+
+
+            return [$key => $value->value];
+        })
+        ->toArray();
+        return $data;
+    }
+
+    private function surat($surat_keluar,$data_surat){
+        $data = [];
+
+        $data['No_surat'] = $data_surat->no_surat;
+        $data['Tanggal_surat'] = $data_surat->tanggal_surat;
+        $data['Atas_nama'] = $data_surat->perangkatDesa->name;
+        $data['Jabatan_atas_nama'] = $data_surat->perangkatDesa->jabatan;
+        $data['Singkatan_jabatan'] = $data_surat->perangkatDesa->persingkat_jabatan;
+
+        return $data;
     }
 
 }

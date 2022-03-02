@@ -38,8 +38,6 @@ class PerangkatEditScreen extends Screen
         return [
             'perangkat' => $perangkatDesa
         ];
-
-        return [];
     }
 
     /**

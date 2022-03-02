@@ -80,7 +80,12 @@ class SuratKeluarDataEditScreen extends Screen
 
             Link::make('Download')
                 ->icon('check')
-                ->route('download',[$this->suratKeluar->id, $this->surat_data_keluar->id])
+                ->route('download',[$this->suratKeluar->id, ($this->exist ? $this->surat_data_keluar->id : 0)])
+                ->canSee($this->exist),
+                
+            Link::make('Print')
+                ->icon('check')
+                ->route('print',[$this->suratKeluar->id, ($this->exist ? $this->surat_data_keluar->id : 0)])
                 ->canSee($this->exist),
 
             Button::make('Simpan')

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SuratKeluarController;
 use App\Models\SuratKeluar;
 use Tabuna\Breadcrumbs\Trail;
 use App\Models\SuratKeluarData;
@@ -94,6 +93,4 @@ Route::screen('surat-keluars/{surat_keluar}/datas/{data}/edit',SuratKeluarDataEd
             ->parent('platform.surat-keluars.show',$surat_keluar)
             ->push('Create',route('platform.surat-keluars.datas.edit',[$surat_keluar,$data]));
     });
-
-Route::get('surat-keluars/{surat_keluar}/datas/{data}/download',[SuratKeluarController::class,'download'])->name('download');
 

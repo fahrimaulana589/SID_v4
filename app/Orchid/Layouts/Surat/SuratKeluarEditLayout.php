@@ -42,7 +42,7 @@ class SuratKeluarEditLayout extends Rows
                 ->required()
                 ->max(255),
 
-            Input::make('surat-keluar.new_template')
+            Input::make('surat-keluar.newtemplate')
                 ->title('Template')
                 ->type('file')
                 ->required(!$this->query->get('exist'))

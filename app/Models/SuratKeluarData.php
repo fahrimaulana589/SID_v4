@@ -89,4 +89,9 @@ class SuratKeluarData extends Model
 
         return $this->belongsTo(Penduduk::class,'id_penduduk');
     }
+
+    public function perangkatDesa(){
+
+        return $this->belongsTo(PerangkatDesa::class,'id_perangkat_desa');
+    }
 }

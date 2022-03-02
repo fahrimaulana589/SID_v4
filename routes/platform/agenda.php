@@ -2,8 +2,8 @@
 
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
-use App\Orchid\Screens\agenda\AgendaEditScreen;
-use App\Orchid\Screens\agenda\AgendaListScreen;
+use App\Orchid\Screens\Agenda\AgendaEditScreen;
+use App\Orchid\Screens\Agenda\AgendaListScreen;
 use App\Orchid\Screens\Agenda\AgendaShowScreen;
 use App\Orchid\Screens\Agenda\DataAgendaEditScreen;
 
