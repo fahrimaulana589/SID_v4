@@ -3,9 +3,11 @@
 namespace App\Orchid\Screens\Keluarga;
 
 use App\Models\Keluarga;
+use App\Models\Penduduk;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
@@ -35,11 +37,12 @@ class KeluargaEditScreen extends Screen
         $this->exist = $keluarga->exists;
 
         if(!$this->exist){
-            $this->name = 'Create Keluarga';
+            $this->name = 'Buat Keluarga';
         }
 
         return [
             'keluarga' => $keluarga,
+            'kepala' => $keluarga->kepala,
             'permission'  => $keluarga->getStatusPermission()
         ];
     }
@@ -52,9 +55,14 @@ class KeluargaEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+            Link::make(__('Kembali'))
+            ->icon('action-undo')
+            ->route('platform.keluargas')
+            ->canSee(true),
+
             Button::make(__('Remove'))
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                ->confirm('Apakah anda akan menghapus data ini')
                 ->method('remove')
                 ->canSee($this->exist),
 
@@ -87,36 +95,59 @@ class KeluargaEditScreen extends Screen
 
     public function save(Keluarga $keluarga,Request $request){
 
-       $data = $request->validate(
+        $data_kepala = $request->validate([
+            'kepala.name_ayah' => [
+                'alpha',
+                'required'
+            ],
+            'kepala.name_ibu' => [
+                'alpha',
+                'required'
+            ],
+        ]);
+
+        $data = $request->validate(
             [
                 'keluarga.KK' => [
+                    'numeric',
+                    'unique:keluargas,KK,'.$keluarga->id,
                     'required'
                 ],
                 'keluarga.id_kepala_keluarga' => [
+                    'numeric',
+                    'unique:keluargas,id_kepala_keluarga,'.$keluarga->id,
                     'required'
                 ],
                 'keluarga.address' => [
+                    'alpha_num',
                     'required'
                 ],
                 'keluarga.rt' => [
+                    'numeric',
                     'required'
                 ],
                 'keluarga.rw' => [
+                    'numeric',
                     'required'
                 ],
                 'keluarga.kode_pos' => [
+                    'numeric',
                     'required'
                 ],
                 'keluarga.kelurahan_desa' => [
+                    'alpha',
                     'required'
                 ],
                 'keluarga.kecamatan' => [
+                    'alpha',
                     'required'
                 ],
                 'keluarga.kabupaten_kota' => [
+                    'alpha',
                     'required'
                 ],
                 'keluarga.provinsi' => [
+                    'alpha',
                     'required'
                 ],
 
@@ -125,24 +156,36 @@ class KeluargaEditScreen extends Screen
 
         $data['id'] = null;
 
+        $ket = "Simpan";
+
         if($keluarga->exists){
             $data['id'] = $keluarga->id;
+            $ket = "Edit";
         }
 
-        Keluarga::updateOrCreate(['id' => $data['id']],$data['keluarga']);
+        $data_keluarga = Keluarga::updateOrCreate(['id' => $data['id']],$data['keluarga']);
 
-        Toast::info('Keluarga berhasil disimpan');
+        $kepala = Penduduk::find($data['keluarga']['id_kepala_keluarga']);
+
+        $kepala->id_keluarga = $data_keluarga->id;
+        $kepala->status_keluarga = "Kepala Rumah Tangga";
+        $kepala->name_ayah = $data_kepala['kepala']['name_ayah'];
+        $kepala->name_ibu = $data_kepala['kepala']['name_ayah'];
+
+        $kepala->save();
+
+        Toast::info($ket.' Data Berhasil');
 
         if(!$keluarga->exists){
             return redirect()->route("platform.keluargas");
         }
+
     }
 
     public function remove(Keluarga $keluarga){
-
         $keluarga->delete();
 
-        Toast::info('Keluarga berhasil dihapus');
+        Toast::info('Hapus Data Berhasil');
 
         return redirect()->route("platform.keluargas");
 

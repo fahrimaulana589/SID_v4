@@ -5,11 +5,13 @@ namespace App\Orchid\Screens\Penduduk;
 use App\Models\Penduduk;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
 use App\Orchid\Layouts\Penduduk\PendudukEditLayout;
-use Illuminate\Http\Request;
 
 class PendudukEditScreen extends Screen
 {
@@ -34,7 +36,7 @@ class PendudukEditScreen extends Screen
         $this->exist = $penduduk->exists;
 
         if(!$this->exist){
-            $this->name = 'Create Penduduk';
+            $this->name = 'Buat Penduduk';
         }
 
         return [
@@ -51,9 +53,14 @@ class PendudukEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.penduduks')
+                ->canSee(true),
+
             Button::make(__('Remove'))
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                ->confirm('Apakah anda akan menghapus data ini')
                 ->method('remove')
                 ->canSee($this->exist),
 
@@ -89,51 +96,74 @@ class PendudukEditScreen extends Screen
        $data = $request->validate(
             [
                 'penduduk.NIK' => [
-                    'required'
+                    'numeric',
+                    'required',
+                    'unique:penduduks,NIK,'.$penduduk->id
                 ],
                 'penduduk.name' => [
+                    'alpha',
                     'required'
                 ],
                 'penduduk.place_of_birth' => [
+                    'alpha',
                     'required'
                 ],
                 'penduduk.date_of_birth' => [
-                    'required'
+                    'required',
+                    'date',
+                    'date_format:Y-m-d',
+                    'before:tomorrow',
                 ],
                 'penduduk.gender' => [
+                    'alpha',
+                    'in:pria,wanita',
                     'required'
                 ],
                 'penduduk.blood' => [
+                    'alpha',
+                    'in:A,B,O,AB',
                     'required'
                 ],
                 'penduduk.address' => [
+                    'alpha_num',
                     'required'
                 ],
                 'penduduk.rt' => [
+                    'numeric',
                     'required'
                 ],
                 'penduduk.rw' => [
+                    'numeric',
                     'required'
                 ],
                 'penduduk.kelurahan_desa' => [
+                    'alpha',
                     'required'
                 ],
                 'penduduk.kecamatan' => [
+                    'alpha',
                     'required'
                 ],
                 'penduduk.religion' => [
+                    'alpha',
+                    'in:islam,kristen',
                     'required'
                 ],
                 'penduduk.status_perkawinan' => [
+                    'alpha',
+                    Rule::in(['sendiri', 'menikah']),
                     'required'
                 ],
                 'penduduk.profession' => [
+                    'alpha',
                     'required'
                 ],
                 'penduduk.kewerganegaraan' => [
+                    'alpha',
                     'required'
                 ],
                 'penduduk.education' => [
+                    'alpha',
                     'required'
                 ],
 
@@ -148,7 +178,9 @@ class PendudukEditScreen extends Screen
 
         Penduduk::updateOrCreate(['id' => $data['id']],$data['penduduk']);
 
-        Toast::info('Penduduk berhasil disimpan');
+        $ket = $penduduk->exists ? 'Edit' : 'Simpan';
+
+        Toast::info($ket.' Data Berhasil');
 
         if(!$penduduk->exists){
             return redirect()->route("platform.penduduks");
@@ -159,7 +191,7 @@ class PendudukEditScreen extends Screen
 
         $penduduk->delete();
 
-        Toast::info('Penduduk berhasil dihapus');
+        Toast::info('Hapus Data Berhasil');
 
         return redirect()->route("platform.penduduks");
 

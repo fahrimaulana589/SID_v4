@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Scout\Builder;
 use Orchid\Screen\AsSource;
 use Orchid\Access\RoleAccess;
 use Orchid\Metrics\Chartable;
@@ -95,6 +96,10 @@ class Penduduk extends Model
 
     public function keluarga(){
         return $this->belongsTo(Keluarga::class,'id_keluarga');
+    }
+
+    public function kepala_keluarga(){
+        return $this->hasOne(Keluarga::class,'id_kepala_keluarga');
     }
 
     public function getFullDateAttribute(){

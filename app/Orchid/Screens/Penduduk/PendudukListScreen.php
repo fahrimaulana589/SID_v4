@@ -16,7 +16,7 @@ class PendudukListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Penduduk Desa';
+    public $name = 'Data Penduduk Desa';
 
     public $description = 'Data penduduk desa karanganyar';
 
@@ -70,7 +70,7 @@ class PendudukListScreen extends Screen
 
         $penduduk->delete();
 
-        Toast::info('Penduduk berhasil dihapus');
+        Toast::info('Hapus Data Berhasil');
 
     }
 }

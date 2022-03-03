@@ -31,6 +31,21 @@ class KeluargaEditLayout extends Rows
                 ->required()
                 ->title('NIK kepala keluarga'),
 
+            Input::make('kepala.name_ibu')
+                ->type('text')
+                ->max(99)
+                ->required()
+                ->title('Ibu kepala keluarga')
+                ->placeholder('Masukan nama ibu kepala keluarga'),
+
+            Input::make('kepala.name_ayah')
+                ->type('text')
+                ->max(99)
+                ->required()
+                ->title('Ayah kepala keluarga')
+                ->placeholder('Masukan nama ayah kepala keluarga'),
+
+
             TextArea::make('keluarga.address')
                 ->type('text')
                 ->rows(5)

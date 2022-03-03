@@ -7,6 +7,7 @@ use App\Models\Penduduk;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
@@ -19,11 +20,13 @@ class KeluargaAnggotaEditScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Edit Anggota Keluarga';
+    public $name = 'Buat Anggota Keluarga';
 
     public $permission = 'platform.systems.keluarga.edit';
 
     private $exist = false;
+
+    private $keluarga;
 
     /**
      * Query data.
@@ -34,11 +37,14 @@ class KeluargaAnggotaEditScreen extends Screen
     {
         $this->exist = $penduduk->exists;
 
-        if(!$this->exist){
+        $this->keluarga = $keluarga;
+
+        if($this->exist){
             $this->name = 'Edit Anggota Keluarga';
         }
 
         return [
+            'keluarga' => $keluarga,
             'penduduk' => $penduduk,
             'permission'  => $penduduk->getStatusPermission()
         ];
@@ -52,6 +58,12 @@ class KeluargaAnggotaEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.keluargas.anggotas', $this->keluarga->id)
+                ->canSee(true),
+
             Button::make(__('Remove'))
                 ->icon('trash')
                 ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
@@ -130,7 +142,7 @@ class KeluargaAnggotaEditScreen extends Screen
         $anggota->fill($data);
         $anggota->save();
 
-        Toast::info('Data berhasil di hapus');
+        Toast::info('Anggota berhasil di hapus');
 
         return redirect()->route('platform.keluargas.anggotas',$keluarga->id);
 

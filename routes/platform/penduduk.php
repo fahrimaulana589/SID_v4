@@ -5,30 +5,27 @@ use Illuminate\Support\Facades\Route;
 use App\Orchid\Screens\Penduduk\PendudukEditScreen;
 use App\Orchid\Screens\Penduduk\PendudukListScreen;
 
-Route::screen('penduduks', PendudukListScreen::class)
+Route::screen('penduduk', PendudukListScreen::class)
 ->name('platform.penduduks')
 ->breadcrumbs(function (Trail $trail) {
     return $trail
         ->parent('platform.index')
-        ->push(__('Data Penduduk'), route('platform.penduduks'));
+        ->push(__('Penduduk'), route('platform.penduduks'));
 });
 
 
-Route::screen('penduduks/create', PendudukEditScreen::class)
+Route::screen('penduduk/buat', PendudukEditScreen::class)
 ->name('platform.penduduks.create')
 ->breadcrumbs(function (Trail $trail) {
     return $trail
         ->parent('platform.penduduks')
-        ->push("Create", route('platform.penduduks.create'));
+        ->push("Buat", route('platform.penduduks.create'));
 });
 
-Route::screen('penduduks/{penduduk}/edit', PendudukEditScreen::class)
+Route::screen('penduduk/{penduduk}/edit', PendudukEditScreen::class)
 ->name('platform.penduduks.edit')
 ->breadcrumbs(function (Trail $trail,$penduduk) {
     return $trail
         ->parent('platform.penduduks')
-        ->push("Create", route('platform.penduduks.edit',$penduduk));
+        ->push("Edit", route('platform.penduduks.edit',$penduduk));
 });
-
-
- 

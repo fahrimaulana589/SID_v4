@@ -6,6 +6,7 @@ use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
 use App\Models\PerangkatDesa;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
@@ -18,7 +19,7 @@ class PerangkatEditScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Create Perangkat';
+    public $name = 'Buat Perangkat';
 
     public $permission = 'platform.systems.perangkat.edit';
 
@@ -33,7 +34,7 @@ class PerangkatEditScreen extends Screen
     {
         $this->exist = $perangkatDesa->exists;
 
-        $this->name = !$this->exist ? 'Create Perangkat' : "Edit Perangkat";
+        $this->name = !$this->exist ? 'Buat Perangkat' : "Edit Perangkat";
 
         return [
             'perangkat' => $perangkatDesa
@@ -49,9 +50,16 @@ class PerangkatEditScreen extends Screen
     {
         return [
 
+            Link::make('Kembali')
+                ->icon('action-undo')
+                ->route('platform.perangkats')
+                ->canSee(true),
+
             Button::make('Hapus')
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and perangkat will be permanently deleted. Before deleting your account, please download any perangkat or information that you wish to retain.'))
+                ->confirm(
+                    'Apakah anda akan menghapus data ini'
+                )
                 ->method('remove')
                 ->canSee($this->exist),
 
@@ -78,7 +86,7 @@ class PerangkatEditScreen extends Screen
         return [
             Layout::block(PerangkatEditLayout::class)
                 ->title('Perangkat Desa')
-                ->description('Silahkan masukan perangkat')
+                ->description('Silahkan masukan data perangkat')
                 ->commands(
                     Button::make('Simpan')
                         ->type(Color::DEFAULT())
@@ -93,12 +101,16 @@ class PerangkatEditScreen extends Screen
         $perangkat = $request->validate(
             [
                 'perangkat.name' => [
+                    'alpha',
                     'required'
                 ],
                 'perangkat.jabatan' => [
-                    'required'
+                    'alpha',
+                    'required',
+                    'unique:perangkat_desas,jabatan'
                 ],
                 'perangkat.persingkat_jabatan' => [
+                    'alpha',
                     'required'
                 ],
             ]
@@ -106,7 +118,7 @@ class PerangkatEditScreen extends Screen
 
         PerangkatDesa::create($perangkat['perangkat']);
 
-        Toast::info("Saimpan Data Berhasil");
+        Toast::info("Simpan Data Berhasil");
 
         return redirect()->route('platform.perangkats');
     }
@@ -115,12 +127,16 @@ class PerangkatEditScreen extends Screen
         $perangkat = $request->validate(
             [
                 'perangkat.name' => [
+                    'alpha',
                     'required'
                 ],
                 'perangkat.jabatan' => [
-                    'required'
+                    'alpha',
+                    'required',
+                    'unique:perangkat_desas,jabatan,'.$perangkatDesa->id
                 ],
                 'perangkat.persingkat_jabatan' => [
+                    'alpha',
                     'required'
                 ],
             ]

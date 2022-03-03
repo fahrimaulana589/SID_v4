@@ -36,11 +36,12 @@ class KeluargaAnggotaListScreen extends Screen
      */
     public function query(Keluarga $keluarga): array
     {
-        $this->description = "NIK : {$keluarga->KK}";
+        $this->description = "Kepala keluarga : {$keluarga->kepala->name}";
         $this->keluarga = $keluarga;
 
         return [
-            'penduduks' => $keluarga->penduduks,
+            'penduduks' => $keluarga->penduduks()->get()->reverse(),
+            'kepala_keluarga' => $keluarga->kepala->name,
             'keluarga' => $keluarga
         ];
     }
@@ -53,6 +54,11 @@ class KeluargaAnggotaListScreen extends Screen
     public function commandBar(): array
     {
         return [
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.keluargas')
+                ->canSee(true),
+
             Link::make('Tambah')
                 ->icon('plus')
                 ->route('platform.keluargas.anggotas.create',$this->keluarga->id)
@@ -84,6 +90,7 @@ class KeluargaAnggotaListScreen extends Screen
                 TD::make('name','Nama'),
                 TD::make('status_keluarga','Status keluarga'),
                 TD::make('name_ayah','Nama ayah'),
+                TD::make('name_ibu','Nama ibu'),
             ])
         ];
     }
@@ -100,7 +107,6 @@ class KeluargaAnggotaListScreen extends Screen
         $anggota->save();
 
         Toast::info('Data berhasil di hapus');
-
     }
 
 }

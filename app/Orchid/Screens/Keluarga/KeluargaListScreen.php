@@ -16,7 +16,7 @@ class KeluargaListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Data Keluarga';
+    public $name = 'Data Keluarga Desa';
 
     public $description = "Data keluarga desa karanganyar";
 
@@ -67,7 +67,7 @@ class KeluargaListScreen extends Screen
 
         $keluarga->delete();
 
-        Toast::info('Agenda Telah Di Hapus');
+        Toast::info('Hapus Data Berhasil');
 
     }
 }

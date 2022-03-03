@@ -17,7 +17,7 @@ class PerangkatListScreen extends Screen
      */
     public $name = 'Data Perangkat Desa';
 
-    public $description = 'Data perngkat desa karanganyar';
+    public $description = 'Data perangkat desa karanganyar';
 
     public $permission = 'platform.systems.perangkat';
 

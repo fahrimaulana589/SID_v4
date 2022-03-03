@@ -120,7 +120,7 @@ class PendudukEditLayout extends Rows
                 ->title('Status perkawinan')
                 ->options([
                         'menikah' => "Menikah",
-                        'belum menikah' => 'Belum menikah',
+                        'sendiri' => 'Sendiri',
                 ]),
 
             Input::make('penduduk.profession')

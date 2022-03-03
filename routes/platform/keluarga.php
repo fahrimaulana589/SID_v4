@@ -7,25 +7,25 @@ use App\Orchid\Screens\Keluarga\KeluargaListScreen;
 use App\Orchid\Screens\Keluarga\KeluargaAnggotaEditScreen;
 use App\Orchid\Screens\Keluarga\KeluargaAnggotaListScreen;
 
-Route::screen('keluargas',KeluargaListScreen::class)
+Route::screen('keluarga',KeluargaListScreen::class)
     ->name('platform.keluargas')
     ->breadcrumbs(function (Trail $trail){
 
         return $trail
             ->parent('platform.index')
-            ->push('Data Keluarga',route('platform.keluargas'));
+            ->push('Keluarga',route('platform.keluargas'));
     });
 
-Route::screen('keluargas/create',KeluargaEditScreen::class)
+Route::screen('keluarga/buat',KeluargaEditScreen::class)
     ->name('platform.keluargas.create')
     ->breadcrumbs(function (Trail $trail){
 
         return $trail
             ->parent('platform.keluargas')
-            ->push('Create',route('platform.keluargas.create'));
+            ->push('Buat',route('platform.keluargas.create'));
     });
 
-Route::screen('keluargas/{keluarga}/edit',KeluargaEditScreen::class)
+Route::screen('keluarga/{keluarga}/edit',KeluargaEditScreen::class)
     ->name('platform.keluargas.edit')
     ->breadcrumbs(function (Trail $trail,$keluaga){
 
@@ -34,33 +34,33 @@ Route::screen('keluargas/{keluarga}/edit',KeluargaEditScreen::class)
             ->push('Edit',route('platform.keluargas.edit',$keluaga));
     });
 
-Route::screen('keluargas/{keluarga}/anggotas',KeluargaAnggotaListScreen::class)
+Route::screen('keluarga/{keluarga}/anggota',KeluargaAnggotaListScreen::class)
     ->name('platform.keluargas.anggotas')
     ->breadcrumbs(function (Trail $trail,$keluarga){
 
         return $trail
             ->parent('platform.keluargas')
-            ->push('Data Anggota Keluarga',route('platform.keluargas.anggotas',$keluarga));
+            ->push('Anggota',route('platform.keluargas.anggotas',$keluarga));
 
     });
 
-Route::screen('keluargas/{keluarga}/anggotas/create',KeluargaAnggotaEditScreen::class)
+Route::screen('keluarga/{keluarga}/anggota/buat',KeluargaAnggotaEditScreen::class)
     ->name('platform.keluargas.anggotas.create')
     ->breadcrumbs(function (Trail $trail,$keluarga){
 
         return $trail
-            ->parent('platform.keluargas')
-            ->push('Data Anggota Keluarga',route('platform.keluargas.anggotas.create',$keluarga));
+            ->parent('platform.keluargas.anggotas',$keluarga)
+            ->push('Buat',route('platform.keluargas.anggotas.create',$keluarga));
 
     });
 
-Route::screen('keluargas/{keluarga}/anggotas/{anggota}/edit',KeluargaAnggotaEditScreen::class)
+Route::screen('keluarga/{keluarga}/anggota/{anggota}/edit',KeluargaAnggotaEditScreen::class)
     ->name('platform.keluargas.anggotas.edit')
     ->breadcrumbs(function (Trail $trail,$keluarga,$anggota){
 
         return $trail
-            ->parent('platform.keluargas')
-            ->push('Data Anggota Keluarga',route('platform.keluargas.anggotas.edit',[$keluarga,$anggota]));
+            ->parent('platform.keluargas.anggotas',$keluarga)
+            ->push('Edit',route('platform.keluargas.anggotas.edit',[$keluarga,$anggota]));
 
     });
 
