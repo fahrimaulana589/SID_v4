@@ -20,9 +20,9 @@ class AgendaShowScreen extends Screen
      *
      * @var string
      */
-    public $name = '';
+    public $name = 'as';
 
-    public $description = '';
+    public $description = 'as';
 
     public $permission = 'platform.systems.agenda';
 
@@ -48,7 +48,7 @@ class AgendaShowScreen extends Screen
                                             ->paginate(10);
 
         foreach($agenda->dataAgendas as $item){
-            $data['data-'.$item->id] = $item;
+            $data['data-'.$item->penduduk->id] = $item->penduduk;
         }
         return $data;
     }
@@ -61,10 +61,16 @@ class AgendaShowScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Link::make('tambah')
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.agendas')
+                ->canSee(true),
+
+            Link::make('Tambah')
                 ->icon('plus')
                 ->route('platform.agendas.create.data',$this->agenda->id)
         ];
+        dd();
     }
 
     /**
@@ -77,9 +83,9 @@ class AgendaShowScreen extends Screen
         $data = [];
         array_push($data,DataAgendaListLayout::class);
 
-        foreach($this->agenda->dataAgendas as $item){
+        foreach($this->agenda->dataAgendas as $key => $item){
             $model = Layout::modal('data-'.$item->id, [
-                Layout::legend('data-'.$item->id, [
+                Layout::legend('data-'.$item->penduduk->id, [
                     Sight::make('id','Id'),
                     Sight::make('name','Nama'),
                     Sight::make('place_of_birth','Tempat Lahir'),
@@ -89,8 +95,6 @@ class AgendaShowScreen extends Screen
                     Sight::make('address','Alamat'),
                     Sight::make('education','Pendidikan'),
                     Sight::make('religion','Agama'),
-                    Sight::make('status','Status'),
-                    Sight::make('necessity','Keperluan'),
                 ])
             ])->withoutApplyButton()
                 ->title('Data agenda');

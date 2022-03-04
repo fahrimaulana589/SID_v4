@@ -5,11 +5,12 @@ namespace App\Orchid\Screens\Data;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use App\Models\AtributeData;
+use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
+use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
 use App\Orchid\Layouts\Data\DataEditLayout;
-use Illuminate\Http\Request;
-use Orchid\Support\Facades\Toast;
 
 class DataEditScreen extends Screen
 {
@@ -34,7 +35,7 @@ class DataEditScreen extends Screen
 
         $this->exist = $atributeData->exists;
 
-        $this->name = !$this->exist ? 'Create Data' : "Edit Data";
+        $this->name = !$this->exist ? 'Buat Data' : "Edit Data";
 
         return [
             'data' => $atributeData
@@ -49,9 +50,15 @@ class DataEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.datas')
+                ->canSee(true),
+
             Button::make('Hapus')
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                ->confirm('Apakah anda akan menghapus data ini')
                 ->method('remove')
                 ->canSee($this->exist),
 
@@ -105,7 +112,7 @@ class DataEditScreen extends Screen
 
         AtributeData::create($data['data']);
 
-        Toast::info("Saimpan Data Berhasil");
+        Toast::info("Simpan Data Berhasil");
 
         return redirect()->route('platform.datas');
     }

@@ -8,6 +8,8 @@ use Orchid\Support\Color;
 use App\Models\DataAgenda;
 use App\Models\AtributeData;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
@@ -29,6 +31,9 @@ class DataAgendaEditScreen extends Screen
 
     private $exist = false;
 
+    private $agenda;
+
+
     /**
      * Query data.
      *
@@ -37,9 +42,10 @@ class DataAgendaEditScreen extends Screen
     public function query(Agenda $agenda,DataAgenda $dataAgenda): array
     {
         $this->exist = $dataAgenda->exists;
+        $this->agenda = $agenda;
 
         if(!$this->exist){
-            $this->name = 'Create Data Agenda';
+            $this->name = 'Buat Data Agenda';
         }
 
         return [
@@ -58,10 +64,14 @@ class DataAgendaEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+            Link::make(__('Kembali'))
+            ->icon('action-undo')
+            ->route('platform.agendas.show',$this->agenda->id)
+            ->canSee(true),
 
             Button::make(__('Remove'))
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                ->confirm('Apakah anda akan menghapus data ini')
                 ->method('remove')
                 ->canSee($this->exist),
 
@@ -99,6 +109,7 @@ class DataAgendaEditScreen extends Screen
                         ->canSee($this->exist)
                         ->method('save')
                 )
+                ->canSee($this->agenda->atribute != '{"data":[]}')
         ];
     }
 
@@ -107,17 +118,24 @@ class DataAgendaEditScreen extends Screen
         $data = $request->validate(
             [
                 'dataAgenda.no_surat' => [
+                    'unique:data_agendas,no_surat,'.$dataAgenda->id,
+                    'regex:/^\d{1,4}\/\d{1,4}\/\d{4}$/',
+                    Rule::exists('surat_keluars','no_surat')->where('no_surat','111'),
                     'required'
                 ],
                 'dataAgenda.id_penduduk' => [
+                    'numeric',
                     'required'
                 ],
                 'dataAgenda.atribute.data.*' => [
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
             ]
         );
+        dd();
 
+        $atribute = array_key_exists("atribute",$data['dataAgenda']);
 
         $data['id'] = null;
         $data['dataAgenda']['id_agenda'] = $agenda->id;
@@ -131,15 +149,20 @@ class DataAgendaEditScreen extends Screen
 
         $datas_surat = AtributeData::all();
 
-        $data['dataAgenda']['atribute']['data'] = collect($data['dataAgenda']['atribute']['data'])
-        ->map(function($data,$key) use ($datas_surat){
+        if($atribute){
 
-            return[
-                'key' => $key,
-                'type' => $datas_surat->where('key','=',$key)->first()->type,
-                'value' => $data
-            ];
-        })->toArray();
+            $data['dataAgenda']['atribute']['data'] = collect($data['dataAgenda']['atribute']['data'])
+            ->map(function($data,$key) use ($datas_surat){
+
+                return[
+                    'key' => $key,
+                    'type' => $datas_surat->where('key','=',$key)->first()->type,
+                    'value' => $data
+                ];
+            })->toArray();
+        }else{
+            $data['dataAgenda']['atribute']['data'] = [];
+        }
 
         $data['dataAgenda']['atribute'] = json_encode($data['dataAgenda']['atribute']);
 
@@ -148,11 +171,22 @@ class DataAgendaEditScreen extends Screen
             'id_agenda' => $data['dataAgenda']['id_agenda']
         ],$data['dataAgenda']);
 
-        Toast::info(__('Data agenda telah tersimpan.'));
+        $ket = $dataAgenda->exists? "Edit" : "Simpan";
 
-        if(!$dataAgenda->exists ){
+        Toast::info(__($ket.' Data Berhasil'));
+
+        if(!$dataAgenda->exists){
             return redirect()->route('platform.agendas.show',$agenda);
         }
+    }
+
+    public function remove(Agenda $agenda,DataAgenda $dataAgenda){
+
+        $dataAgenda->delete();
+        Toast::info('Hapus Data Berhasil');
+
+        return redirect()->route('platform.agendas.show',$agenda);
+
     }
 
 }

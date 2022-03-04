@@ -36,10 +36,17 @@ class AgendaDescriptionLayout extends Rows
 
     private function makeCheckBoxData() : array{
 
+
+
         $datas = $this->query->get('data_atribute');
+
+        if (count($datas) == 0) {
+            return [];
+        }
+
         $datas_surat = $this->query->get('agenda')->atribute;
 
-        if ($datas_surat != null){
+        if ($datas_surat != null && $datas_surat != '{"data":[]}'){
             $datas_surat = json_decode($datas_surat);
             $datas_surat = get_object_vars($datas_surat->data);
             $datas_surat = collect($datas_surat)->map(function($data){

@@ -16,7 +16,7 @@ class SuratListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Daftar Surat Masuk';
+    public $name = 'Daftar Surat Masuk Desa';
 
     public $description = 'Daftar surat masuk desa karanganyar';
 

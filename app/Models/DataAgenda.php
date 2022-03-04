@@ -53,4 +53,8 @@ class DataAgenda extends Model
         return $this->belongsTo(Agenda::class,'id_agenda');
     }
 
+    public function penduduk(){
+        return $this->belongsTo(Penduduk::class,'id_penduduk');
+    }
+
 }

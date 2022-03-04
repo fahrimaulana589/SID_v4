@@ -37,7 +37,7 @@ class SuratShowScreen extends Screen
     {
         return [
             Button::make('Kembali')
-                ->icon('arrow-left')
+                ->icon('action-undo')
                 ->method('back')
         ];
     }

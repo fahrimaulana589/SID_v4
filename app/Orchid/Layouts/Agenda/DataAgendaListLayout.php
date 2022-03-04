@@ -33,6 +33,12 @@ class DataAgendaListLayout extends Table
             TD::make('no_surat','No surat')
                 ->sort()
                 ->filter(Input::class),
+            TD::make('no_surat','Nana')
+                ->sort()
+                ->filter(Input::class)
+                ->render(function ($data){
+                    return($data->penduduk->name);
+                }),
             TD::make('Action')
                 ->align(TD::ALIGN_CENTER)
                 ->width('100px')
@@ -40,7 +46,7 @@ class DataAgendaListLayout extends Table
                     return DropDown::make()
                         ->icon('options-vertical')
                         ->list([
-                            ModalToggle::make('Lihat')
+                            ModalToggle::make('Lihat penduduk')
                                 ->modal('data-'.$data_agenda->id)
                                 ->icon('full-screen'),
 
@@ -50,6 +56,7 @@ class DataAgendaListLayout extends Table
 
                             Button::make(__('Delete'))
                                 ->icon('trash')
+                                ->confirm('Apakah anda akan menghapus data ini')
                                 ->method('remove',[
                                     'id' => $data_agenda->id,
                                 ]),

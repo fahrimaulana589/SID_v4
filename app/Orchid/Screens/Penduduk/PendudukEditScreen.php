@@ -101,11 +101,11 @@ class PendudukEditScreen extends Screen
                     'unique:penduduks,NIK,'.$penduduk->id
                 ],
                 'penduduk.name' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'penduduk.place_of_birth' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'penduduk.date_of_birth' => [
@@ -115,17 +115,17 @@ class PendudukEditScreen extends Screen
                     'before:tomorrow',
                 ],
                 'penduduk.gender' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'in:pria,wanita',
                     'required'
                 ],
                 'penduduk.blood' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'in:A,B,O,AB',
                     'required'
                 ],
                 'penduduk.address' => [
-                    'alpha_num',
+                    'regex:/[a-zA-Z0-9\s]+/',
                     'required'
                 ],
                 'penduduk.rt' => [
@@ -137,33 +137,33 @@ class PendudukEditScreen extends Screen
                     'required'
                 ],
                 'penduduk.kelurahan_desa' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'penduduk.kecamatan' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'penduduk.religion' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'in:islam,kristen',
                     'required'
                 ],
                 'penduduk.status_perkawinan' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     Rule::in(['sendiri', 'menikah']),
                     'required'
                 ],
                 'penduduk.profession' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'penduduk.kewerganegaraan' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'penduduk.education' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
 

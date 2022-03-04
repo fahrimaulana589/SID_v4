@@ -23,8 +23,9 @@ class DataAgendaKeperluanLayout extends Rows
 
         $data = $this->query->get('agenda')->atribute;
 
-        if($exist){
-            $data_surat = $this->query->get('dataAgenda')->atribute;
+        $data_surat = $this->query->get('dataAgenda')->atribute;
+
+        if($exist && $data_surat != '{"data":[]}'){
 
             $data_surat = str_replace("'",'"',$data_surat);
 
@@ -33,6 +34,10 @@ class DataAgendaKeperluanLayout extends Rows
         }
         else{
             $data_surat = [];
+        }
+
+        if($data == '{"data":[]}'){
+            return $field;
         }
 
         $data = str_replace("'",'"',$data);

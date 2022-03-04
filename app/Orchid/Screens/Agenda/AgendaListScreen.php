@@ -20,7 +20,7 @@ class AgendaListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Daftar Agenda';
+    public $name = 'Daftar Agenda Desa';
 
     public $description = 'Daftar buku agenda desa karanganayar';
 
@@ -80,7 +80,7 @@ class AgendaListScreen extends Screen
 
         $agenda->delete();
 
-        Toast::info('Agenda Telah Di Hapus');
-        
+        Toast::info('Hapus Data berhasil');
+
     }
 }

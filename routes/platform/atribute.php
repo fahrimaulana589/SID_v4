@@ -6,7 +6,7 @@ use App\Orchid\Screens\Data\DataEditScreen;
 use App\Orchid\Screens\Data\DataListScreen;
 use App\Orchid\Screens\agenda\AgendaListScreen;
 
-Route::screen('datas', DataListScreen::class)
+Route::screen('data', DataListScreen::class)
     ->name('platform.datas')
     ->breadcrumbs(function (Trail $trail){
         return $trail
@@ -14,15 +14,15 @@ Route::screen('datas', DataListScreen::class)
             ->push('Data',route('platform.datas'));
     });
 
-Route::screen('datas/create', DataEditScreen::class)
+Route::screen('data/buat', DataEditScreen::class)
     ->name('platform.datas.create')
     ->breadcrumbs(function (Trail $trail){
         return $trail
             ->parent('platform.datas')
-            ->push('Create',route('platform.datas.create'));
+            ->push('Buat',route('platform.datas.create'));
     });
 
-Route::screen('datas/{data}/edit', DataEditScreen::class)
+Route::screen('data/{data}/edit', DataEditScreen::class)
     ->name('platform.datas.edit')
     ->breadcrumbs(function (Trail $trail,$data){
         return $trail

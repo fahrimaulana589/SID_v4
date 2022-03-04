@@ -7,9 +7,11 @@ use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Orchid\Attachment\File;
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
+use App\Orchid\Layouts\Surat\SuratEditLayout;
 
 class SuratEditScreen extends Screen
 {
@@ -34,7 +36,7 @@ class SuratEditScreen extends Screen
         $this->exist = $surat->exists ;
 
         if(!$this->exist){
-            $this->name = 'Create Surat Masuk';
+            $this->name = 'Buat Surat Masuk';
         }
 
         return [
@@ -52,9 +54,15 @@ class SuratEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.surat-masuks')
+                ->canSee(true),
+
             Button::make(__('Remove'))
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                ->confirm('Apakah anda akan menghapus data ini')
                 ->method('remove')
                 ->canSee($this->exist),
 
@@ -96,14 +104,17 @@ class SuratEditScreen extends Screen
         $data = $request->validate(
              [
                  'surat_masuk.title' => [
+                    'regex:/^[\pL\s\-]+$/u',
                      'required'
                  ],
 
                  'surat_masuk.description' => [
+                    'regex:/^[\pL\s\-]+$/u',
                      'required'
                  ],
 
                  'surat_masuk.pengirim' => [
+                    'regex:/^[\pL\s\-]+$/u',
                      'required'
                  ],
 
@@ -123,7 +134,7 @@ class SuratEditScreen extends Screen
 
         $surat->attachment()->save($attachment);
 
-        Toast::info('Surat berhasil disimpan');
+        Toast::info('Simpan Data Berhasil');
         return redirect()->route("platform.surat-masuks");
 
     }
@@ -132,20 +143,23 @@ class SuratEditScreen extends Screen
         $data = $request->validate(
             [
                 'surat_masuk.title' => [
-                    'required'
-                ],
+                    'regex:/^[\pL\s\-]+$/u',
+                     'required'
+                 ],
 
-                'surat_masuk.description' => [
-                    'required'
-                ],
+                 'surat_masuk.description' => [
+                    'regex:/^[\pL\s\-]+$/u',
+                     'required'
+                 ],
 
-                'surat_masuk.pengirim' => [
-                    'required'
-                ],
+                 'surat_masuk.pengirim' => [
+                    'regex:/^[\pL\s\-]+$/u',
+                     'required'
+                 ],
 
-                'surat_masuk.new_file' => [
-                    'mimes:pdf',
-                ],
+                 'surat_masuk.new_file' => [
+                     'mimes:pdf',
+                 ],
             ]
         );
 
@@ -168,7 +182,7 @@ class SuratEditScreen extends Screen
 
         }
 
-        Toast::info('Surat berhasil disimpan');
+        Toast::info('Edit Data Berhasil');
 
     }
 
@@ -177,7 +191,7 @@ class SuratEditScreen extends Screen
         $surat->attachment()->delete();
         $surat->delete();
 
-        Toast::info('Penduduk berhasil dihapus');
+        Toast::info('Hapus Data Berhasil');
         return redirect()->route("platform.surat-masuks");
     }
 }

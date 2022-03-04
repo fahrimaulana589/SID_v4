@@ -40,7 +40,7 @@ class KeluargaAnggotaListScreen extends Screen
         $this->keluarga = $keluarga;
 
         return [
-            'penduduks' => $keluarga->penduduks()->get()->reverse(),
+            'penduduks' => $keluarga->penduduks()->get(),
             'kepala_keluarga' => $keluarga->kepala->name,
             'keluarga' => $keluarga
         ];
@@ -106,7 +106,7 @@ class KeluargaAnggotaListScreen extends Screen
         $anggota->fill($data);
         $anggota->save();
 
-        Toast::info('Data berhasil di hapus');
+        Toast::info('Hapus Data Berhasil');
     }
 
 }

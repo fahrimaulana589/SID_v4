@@ -7,6 +7,7 @@ use App\Models\AtributeData;
 use Orchid\Screen\Actions\Link;
 use Orchid\Support\Facades\Toast;
 use App\Orchid\Layouts\Data\DataListLayout;
+use Illuminate\Http\Request;
 
 class DataListScreen extends Screen
 {
@@ -15,7 +16,7 @@ class DataListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Daftar data';
+    public $name = 'Daftar Data';
 
     public $permission = 'platform.systems.data';
 
@@ -24,10 +25,10 @@ class DataListScreen extends Screen
      *
      * @return array
      */
-    public function query(): array
+    public function query(Request $request): array
     {
 
-        $data = AtributeData::filters()
+       $data = AtributeData::filters()
             ->defaultSort('id', 'desc')
             ->paginate(10);
 
@@ -44,6 +45,12 @@ class DataListScreen extends Screen
     public function commandBar(): array
     {
         return [
+
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->href("".session('url_data'))
+                ->canSee(true),
+
             Link::make('Tambah')
                 ->icon('plus')
                 ->route('platform.datas.create')

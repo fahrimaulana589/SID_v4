@@ -66,8 +66,9 @@ class KeluargaAnggotaEditScreen extends Screen
 
             Button::make(__('Remove'))
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
-                ->method('remove')
+                ->confirm(
+                    'Apakah anda akan menghapus data ini'
+                )->method('remove')
                 ->canSee($this->exist),
 
             Button::make(__('Save'))
@@ -122,7 +123,7 @@ class KeluargaAnggotaEditScreen extends Screen
         $anggota->fill($data['penduduk']);
         $anggota->save();
 
-        Toast::info('Anggota berhasil disimpan');
+        Toast::info('Simpan Data Berhasil');
 
         if(!$penduduk->exists){
             return redirect()->route("platform.keluargas.anggotas",$keluarga->id);
@@ -142,7 +143,7 @@ class KeluargaAnggotaEditScreen extends Screen
         $anggota->fill($data);
         $anggota->save();
 
-        Toast::info('Anggota berhasil di hapus');
+        Toast::info('Hapus Data Berhasil');
 
         return redirect()->route('platform.keluargas.anggotas',$keluarga->id);
 

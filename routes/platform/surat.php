@@ -14,7 +14,7 @@ use App\Orchid\Screens\Surat\SuratKeluarListScreen;
 use App\Orchid\Screens\Surat\SuratKeluarShowScreen;
 use App\Orchid\Screens\Surat\SuratKeluarDataEditScreen;
 
-Route::screen('surat-masuks',SuratListScreen::class)
+Route::screen('surat-masuk',SuratListScreen::class)
     ->name('platform.surat-masuks')
     ->breadcrumbs(function (Trail $trail){
         return $trail
@@ -22,28 +22,28 @@ Route::screen('surat-masuks',SuratListScreen::class)
             ->push('Data Surat Masuk',route('platform.surat-masuks'));
     });
 
-Route::screen('surat-masuks/create',SuratEditScreen::class)
+Route::screen('surat-masuk/buat',SuratEditScreen::class)
     ->name('platform.surat-masuks.create')
     ->breadcrumbs(function (Trail $trail){
         return $trail
             ->parent('platform.surat-masuks')
-            ->push('Create',route('platform.surat-masuks.create'));
+            ->push('Buat',route('platform.surat-masuks.create'));
     });
 
-Route::screen('surats-masuks/{surat}/edit',SuratEditScreen::class)
+Route::screen('surats-masuk/{surat}/edit',SuratEditScreen::class)
     ->name('platform.surat-masuks.edit')
     ->breadcrumbs(function (Trail $trail,$surat){
         return $trail
             ->parent('platform.surat-masuks')
-            ->push('Create',route('platform.surat-masuks.edit',$surat));
+            ->push('Edit',route('platform.surat-masuks.edit',$surat));
     });
 
-Route::screen('surats-masuks/{surat}/show',SuratShowScreen::class)
+Route::screen('surats-masuk/{surat}/data',SuratShowScreen::class)
     ->name('platform.surat-masuks.show')
     ->breadcrumbs(function (Trail $trail,$surat){
         return $trail
             ->parent('platform.surat-masuks')
-            ->push('Show',route('platform.surat-masuks.show',$surat));
+            ->push('Data',route('platform.surat-masuks.show',$surat));
     });
 
 Route::screen('surat-keluars',SuratKeluarListScreen::class)

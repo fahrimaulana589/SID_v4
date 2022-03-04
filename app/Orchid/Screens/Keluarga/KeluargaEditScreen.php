@@ -45,6 +45,7 @@ class KeluargaEditScreen extends Screen
             'kepala' => $keluarga->kepala,
             'permission'  => $keluarga->getStatusPermission()
         ];
+
     }
 
     /**
@@ -97,11 +98,11 @@ class KeluargaEditScreen extends Screen
 
         $data_kepala = $request->validate([
             'kepala.name_ayah' => [
-                'alpha',
+                'regex:/^[\pL\s\-]+$/u',
                 'required'
             ],
             'kepala.name_ibu' => [
-                'alpha',
+                'regex:/^[\pL\s\-]+$/u',
                 'required'
             ],
         ]);
@@ -119,7 +120,7 @@ class KeluargaEditScreen extends Screen
                     'required'
                 ],
                 'keluarga.address' => [
-                    'alpha_num',
+                    'regex:/[a-zA-Z0-9\s]+/',
                     'required'
                 ],
                 'keluarga.rt' => [
@@ -135,19 +136,19 @@ class KeluargaEditScreen extends Screen
                     'required'
                 ],
                 'keluarga.kelurahan_desa' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'keluarga.kecamatan' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'keluarga.kabupaten_kota' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
                 'keluarga.provinsi' => [
-                    'alpha',
+                    'regex:/^[\pL\s\-]+$/u',
                     'required'
                 ],
 
