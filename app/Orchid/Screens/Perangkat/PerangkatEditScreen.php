@@ -101,16 +101,16 @@ class PerangkatEditScreen extends Screen
         $perangkat = $request->validate(
             [
                 'perangkat.name' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'perangkat.jabatan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required',
                     'unique:perangkat_desas,jabatan'
                 ],
                 'perangkat.persingkat_jabatan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
             ]
@@ -127,16 +127,16 @@ class PerangkatEditScreen extends Screen
         $perangkat = $request->validate(
             [
                 'perangkat.name' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'perangkat.jabatan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required',
                     'unique:perangkat_desas,jabatan,'.$perangkatDesa->id
                 ],
                 'perangkat.persingkat_jabatan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
             ]

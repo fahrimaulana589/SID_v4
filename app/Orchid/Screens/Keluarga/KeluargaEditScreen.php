@@ -98,11 +98,11 @@ class KeluargaEditScreen extends Screen
 
         $data_kepala = $request->validate([
             'kepala.name_ayah' => [
-                'regex:/^[\pL\s\-]+$/u',
+                'regex:/^[a-zA-Z0-9\s_().,]+$/',
                 'required'
             ],
             'kepala.name_ibu' => [
-                'regex:/^[\pL\s\-]+$/u',
+                'regex:/^[a-zA-Z0-9\s_().,]+$/',
                 'required'
             ],
         ]);
@@ -120,7 +120,7 @@ class KeluargaEditScreen extends Screen
                     'required'
                 ],
                 'keluarga.address' => [
-                    'regex:/[a-zA-Z0-9\s]+/',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'keluarga.rt' => [
@@ -136,19 +136,19 @@ class KeluargaEditScreen extends Screen
                     'required'
                 ],
                 'keluarga.kelurahan_desa' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'keluarga.kecamatan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'keluarga.kabupaten_kota' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'keluarga.provinsi' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
 

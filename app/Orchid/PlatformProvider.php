@@ -63,7 +63,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.keluargas')
                 ->permission('platform.systems.keluarga'),
 
-            Menu::make('Data Perabgkat Desa')
+            Menu::make('Data Perangkat Desa')
                 ->icon('info')
                 ->route('platform.perangkats')
                 ->title('Desa')

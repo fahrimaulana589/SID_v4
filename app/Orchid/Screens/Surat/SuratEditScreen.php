@@ -104,17 +104,17 @@ class SuratEditScreen extends Screen
         $data = $request->validate(
              [
                  'surat_masuk.title' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                      'required'
                  ],
 
                  'surat_masuk.description' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                      'required'
                  ],
 
                  'surat_masuk.pengirim' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                      'required'
                  ],
 
@@ -143,17 +143,17 @@ class SuratEditScreen extends Screen
         $data = $request->validate(
             [
                 'surat_masuk.title' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                      'required'
                  ],
 
                  'surat_masuk.description' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                      'required'
                  ],
 
                  'surat_masuk.pengirim' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                      'required'
                  ],
 

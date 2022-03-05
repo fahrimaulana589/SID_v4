@@ -15,9 +15,9 @@ class SuratKeluarListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Surat Keluar';
+    public $name = 'Data Surat Keluar';
 
-    public $description = 'Daftar surat keluar desa karanganyar';
+    public $description = 'Data surat keluar desa karanganyar';
 
     public $permission = 'platform.systems.surat';
 
@@ -51,7 +51,7 @@ class SuratKeluarListScreen extends Screen
 
     /**
      * Views.
-     *
+     *pleuar
      * @return \Orchid\Screen\Layout[]|string[]
      */
     public function layout(): array

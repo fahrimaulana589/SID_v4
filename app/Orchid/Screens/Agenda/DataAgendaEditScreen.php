@@ -119,8 +119,7 @@ class DataAgendaEditScreen extends Screen
             [
                 'dataAgenda.no_surat' => [
                     'unique:data_agendas,no_surat,'.$dataAgenda->id,
-                    'regex:/^\d{1,4}\/\d{1,4}\/\d{4}$/',
-                    Rule::exists('surat_keluars','no_surat')->where('no_surat','111'),
+                    'regex:/^\d{1,}\/\d{1,}\/\d{4}$/',
                     'required'
                 ],
                 'dataAgenda.id_penduduk' => [
@@ -128,12 +127,11 @@ class DataAgendaEditScreen extends Screen
                     'required'
                 ],
                 'dataAgenda.atribute.data.*' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
             ]
         );
-        dd();
 
         $atribute = array_key_exists("atribute",$data['dataAgenda']);
 

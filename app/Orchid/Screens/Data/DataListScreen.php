@@ -16,7 +16,7 @@ class DataListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Daftar Data';
+    public $name = 'Data Data';
 
     public $permission = 'platform.systems.data';
 

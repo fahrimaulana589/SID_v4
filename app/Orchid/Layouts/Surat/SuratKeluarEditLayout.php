@@ -55,6 +55,7 @@ class SuratKeluarEditLayout extends Rows
 
             Relation::make('surat-keluar.id_agenda')
                 ->title('Agenda')
+                ->required()
                 ->fromModel(Agenda::class, 'title','id'),
 
             Input::make('surat-keluar.no_surat')
@@ -80,8 +81,12 @@ class SuratKeluarEditLayout extends Rows
 
         $datas = $this->query->get('data_atribute');
         $datas_surat = $this->query->get('surat-keluar')->atribute;
+        
+        if (count($datas) == 0) {
+            return [];
+        }
 
-        if ($datas_surat != null){
+        if ($datas_surat != null  && $datas_surat != '{"data":[]}'){
             $datas_surat = json_decode($datas_surat);
             $datas_surat = get_object_vars($datas_surat->data);
             $datas_surat = collect($datas_surat)->map(function($data){

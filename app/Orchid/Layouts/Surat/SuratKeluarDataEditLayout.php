@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts\Surat;
 
+use App\Models\DataAgenda;
 use App\Models\Penduduk;
 use App\Models\PerangkatDesa;
 use Carbon\Carbon;
@@ -60,7 +61,8 @@ class SuratKeluarDataEditLayout extends Rows
 
         $data = $this->query->get('surat_keluar')->atribute;
 
-        if($exist){
+
+        if($exist ){
             $data_surat = $this->query->get('surat_keluar_data')->atribute;
 
             $data_surat = str_replace("'",'"',$data_surat);
@@ -74,6 +76,10 @@ class SuratKeluarDataEditLayout extends Rows
         }
 
         $data = str_replace("'",'"',$data);
+
+        if($data == '{"data":[]}'){
+            return $field;
+        }
 
         $data =  json_decode($data);
         $data =  get_object_vars($data->data);
@@ -111,10 +117,13 @@ class SuratKeluarDataEditLayout extends Rows
         $data = '';
         $tahun = 0;
         $no = 0;
+        // dd('s');
 
         $surat_keluar = $this->query->get('surat_keluar');
+        $agenda = $surat_keluar->agenda;
 
-        if(!$surat_keluar->datas()->exists()){
+
+        if(!$agenda->dataAgendas()->exists()){
             $tahun = Carbon::now()->year;
             $no = 1;
 
@@ -124,7 +133,7 @@ class SuratKeluarDataEditLayout extends Rows
         };
 
         $tahun = Carbon::now()->year;
-        $data_terakhir = $surat_keluar->datas->last()->no_surat;
+        $data_terakhir = $agenda->dataAgendas->last()->no_surat;
         $data_terakhir = explode('/',$data_terakhir);
         $tahun_trakhir = $data_terakhir[2];
 

@@ -119,15 +119,15 @@ class AgendaEditScreen extends Screen
             [
                 'agenda.title' => [
                     'unique:agendas,title,'.$agenda->id,
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'agenda.description' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'agenda.atribute.data.*' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
             ]

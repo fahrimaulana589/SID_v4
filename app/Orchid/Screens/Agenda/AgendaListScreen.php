@@ -20,9 +20,9 @@ class AgendaListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Daftar Agenda Desa';
+    public $name = 'Data Agenda Desa';
 
-    public $description = 'Daftar buku agenda desa karanganayar';
+    public $description = 'Data buku agenda desa karanganayar';
 
     public $permission = 'platform.systems.agenda';
 

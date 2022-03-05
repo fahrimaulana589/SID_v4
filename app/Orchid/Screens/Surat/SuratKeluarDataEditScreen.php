@@ -29,6 +29,8 @@ class SuratKeluarDataEditScreen extends Screen
 
     public $suratKeluar;
 
+    public $dataAgenda;
+
     public $surat_data_keluar;
 
     public $exist = false;
@@ -45,14 +47,19 @@ class SuratKeluarDataEditScreen extends Screen
         $this->name = $suratKeluar->title;
         $this->exist = $surat_data_keluar->exists;
 
+        $this->dataAgenda = $suratKeluar->agenda;
+
         if($this->exist){
             $this->surat_data_keluar = $suratKeluar->datas()->findOrFail($surat_data_keluar->id);
+            $this->dataAgenda = $surat_data_keluar->agendaData;
         }
+
+
 
         return [
             'exist' =>  $this->exist,
             'agenda' => $suratKeluar->agenda,
-            'dataAgenda' => $surat_data_keluar->agendaData,
+            'dataAgenda' => $this->dataAgenda,
             'surat_keluar' => $suratKeluar,
             'surat_keluar_data' =>  $this->surat_data_keluar ,
         ];
@@ -66,11 +73,15 @@ class SuratKeluarDataEditScreen extends Screen
     public function commandBar(): array
     {
         return [
-
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.surat-keluars.show',$this->suratKeluar->id)
+                ->canSee(true),
 
             Button::make('Hapus')
                 ->icon('trash')
                 ->method('remove')
+                ->confirm('Apakah anda akan menghapus data ini')
                 ->canSee($this->exist),
 
             Button::make('Simpan')
@@ -82,7 +93,7 @@ class SuratKeluarDataEditScreen extends Screen
                 ->icon('check')
                 ->route('download',[$this->suratKeluar->id, ($this->exist ? $this->surat_data_keluar->id : 0)])
                 ->canSee($this->exist),
-                
+
             Link::make('Print')
                 ->icon('check')
                 ->route('print',[$this->suratKeluar->id, ($this->exist ? $this->surat_data_keluar->id : 0)])
@@ -128,15 +139,19 @@ class SuratKeluarDataEditScreen extends Screen
         $data = $request->validate(
             [
                 'surat_keluar_data.no_surat' => [
+                    'unique:data_agendas,no_surat',
                     'required'
                 ],
                 'surat_keluar_data.tanggal_surat' => [
+                    'date',
                     'required'
                 ],
                 'surat_keluar_data.id_penduduk' => [
+                    'numeric',
                     'required'
                 ],
                 'surat_keluar_data.id_perangkat_desa' => [
+                    'numeric',
                     'required'
                 ],
                 'surat_keluar_data.atribute.data' => [
@@ -191,7 +206,7 @@ class SuratKeluarDataEditScreen extends Screen
 
         DataAgenda::create($dataAgenda['dataAgenda']);
 
-        Toast::info('Data berhasil di simpan');
+        Toast::info('Simpan Data Berhasil');
 
         return redirect()->route('platform.surat-keluars.show',$suratKeluar->id);
     }
@@ -201,15 +216,20 @@ class SuratKeluarDataEditScreen extends Screen
         $data = $request->validate(
             [
                 'surat_keluar_data.no_surat' => [
+                    'unique:data_agendas,no_surat,'.$surat_data_keluar->id,
+                    'regex:/^\d{1,}\/\d{1,}\/\d{4}$/',
                     'required'
                 ],
                 'surat_keluar_data.tanggal_surat' => [
+                    'date',
                     'required'
                 ],
                 'surat_keluar_data.id_penduduk' => [
+                    'numeric',
                     'required'
                 ],
                 'surat_keluar_data.id_perangkat_desa' => [
+                    'numeric',
                     'required'
                 ],
                 'surat_keluar_data.atribute.data' => [
@@ -263,13 +283,13 @@ class SuratKeluarDataEditScreen extends Screen
 
         $data = $surat_data_keluar->agendaData->fill($dataAgenda['dataAgenda'])->save();
 
-        Toast::info('Data berhasil di simpan');
+        Toast::info('Edit Data Berhasil');
 
     }
     public function remove(SuratKeluar $suratKeluar,SuratKeluarData $surat_data_keluar,Request $request){
         $surat_data_keluar->delete();
 
-        Toast::info('Data berhasil di hapus');
+        Toast::info('Hapus Data Berhasil');
 
         return redirect()->route('platform.surat-keluars.show',$suratKeluar->id);
     }

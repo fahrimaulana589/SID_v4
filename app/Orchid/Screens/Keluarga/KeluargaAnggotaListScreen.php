@@ -21,9 +21,9 @@ class KeluargaAnggotaListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Daftar Anggota Keluarga';
+    public $name = 'Data Anggota Keluarga';
 
-    public $description = 'Daftar anggota keluarga';
+    public $description = 'Data anggota keluarga';
 
     public $permission = 'platform.systems.keluarga';
 

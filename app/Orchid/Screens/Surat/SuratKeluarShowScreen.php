@@ -52,6 +52,11 @@ class SuratKeluarShowScreen extends Screen
     public function commandBar(): array
     {
         return [
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.surat-keluars')
+                ->canSee(true),
+
             Link::make('Tambah')
                 ->icon('plus')
                 ->route('platform.surat-keluars.datas.create',[$this->suratKeluar->id])
@@ -73,6 +78,6 @@ class SuratKeluarShowScreen extends Screen
     public function remove(SuratKeluarData $surat_data_keluar){
         $surat_data_keluar->delete();
 
-        Toast::info('Data berhasil di hapus');
+        Toast::info('Hapus Data Berhasil');
     }
 }

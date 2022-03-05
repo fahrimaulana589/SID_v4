@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Surat;
 
 use mysqli;
 use Orchid\Screen\Screen;
+use Orchid\Support\Color;
 use App\Models\SuratKeluar;
 use Orchid\Attachment\File;
 use App\Models\AtributeData;
@@ -13,10 +14,10 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
 use Illuminate\Support\Facades\Schema;
+use function PHPUnit\Framework\returnSelf;
+
 use App\Orchid\Layouts\Surat\SuratKeluarEditLayout;
 use Illuminate\Http\Client\Request as ClientRequest;
-
-use function PHPUnit\Framework\returnSelf;
 
 class SuratKeluarEditScreen extends Screen
 {
@@ -36,8 +37,9 @@ class SuratKeluarEditScreen extends Screen
      *
      * @return array
      */
-    public function query(SuratKeluar $suratKeluar): array
+    public function query(SuratKeluar $suratKeluar,Request $request): array
     {
+        session(['url_data' => ''.$request->url()]);
 
         $this->exist = $suratKeluar->exists;
 
@@ -61,13 +63,18 @@ class SuratKeluarEditScreen extends Screen
     {
         return [
 
+            Link::make(__('Kembali'))
+                ->icon('action-undo')
+                ->route('platform.surat-keluars')
+                ->canSee(true),
 
             Link::make('Data')
                 ->icon('info')
                 ->route('platform.datas'),
 
             Button::make('Hapus')
-                ->icon('check')
+                ->icon('trash')
+                ->confirm('Apakah anda akan menghapus data ini')
                 ->method('remove')
                 ->canSee($this->exist),
 
@@ -103,9 +110,10 @@ class SuratKeluarEditScreen extends Screen
                 ->description('Silahkan masukan data surat')
                 ->commands(
                     Button::make('Simpan')
-                    ->icon('check')
-                    ->method('edit')
-                    ->canSee($this->exist),
+                        ->type(Color::DEFAULT())
+                        ->icon('check')
+                        ->method('edit')
+                        ->canSee($this->exist),
                 ),
         ];
     }
@@ -117,7 +125,8 @@ class SuratKeluarEditScreen extends Screen
         $file = $request->validate(
             [
                 'surat-keluar.newtemplate' => [
-                    'mimes:docx'
+                    'mimes:docx',
+                    'required',
                 ],
             ]
         );
@@ -125,31 +134,44 @@ class SuratKeluarEditScreen extends Screen
         $data = $request->validate(
             [
                 'surat-keluar.title' =>[
-                    'required'
+                    'required',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
+                    'unique:surat_keluars,title',
                 ],
                 'surat-keluar.description' => [
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'surat-keluar.no_surat' => [
-                    'required'
+                    'numeric',
+                    'required',
+                    'unique:surat_keluars,no_surat',
                 ],
                 'surat-keluar.atribute.data.*' => [
-
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
+                    'required'
                 ],
                 'surat-keluar.id_agenda' => [
-
+                    'numeric',
+                    'required'
                 ],
             ]
         );
 
-        $data['surat-keluar']['atribute']['data'] = collect($data['surat-keluar']['atribute']['data'])
-        ->map(function($data,$key) use ($datas_surat){
+        $atribute = array_key_exists("atribute",$data['surat-keluar']);
 
-            return[
-                'key' => $data,
-                'type' => $datas_surat->where('key','=',$data)->first()->type
-            ];
-        })->toArray();
+        if($atribute){
+            $data['surat-keluar']['atribute']['data'] = collect($data['surat-keluar']['atribute']['data'])
+                ->map(function($data,$key) use ($datas_surat){
+
+                    return[
+                        'key' => $data,
+                        'type' => $datas_surat->where('key','=',$data)->first()->type
+                    ];
+                })->toArray();
+        }else{
+            $data['surat-keluar']['atribute']['data'] = [];
+        }
 
         $data['surat-keluar']['atribute'] = json_encode($data['surat-keluar']['atribute']);
 
@@ -161,7 +183,7 @@ class SuratKeluarEditScreen extends Screen
 
         $surat->attachment()->save($attachment);
 
-        Toast::info('Surat Keluar berhasil disimpan');
+        Toast::info('Simpan Data Berhasil');
 
         return redirect()->route('platform.surat-keluars.edit',$surat->id);
     }
@@ -180,32 +202,46 @@ class SuratKeluarEditScreen extends Screen
         $data = $request->validate(
             [
                 'surat-keluar.title' =>[
-                    'required'
+                    'required',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
+                    'unique:surat_keluars,title,'.$suratKeluar->id,
                 ],
                 'surat-keluar.description' => [
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'surat-keluar.no_surat' => [
-                    'required'
+                    'numeric',
+                    'required',
+                    'unique:surat_keluars,no_surat,'.$suratKeluar->id,
                 ],
                 'surat-keluar.atribute.data.*' => [
-
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
+                    'required'
                 ],
                 'surat-keluar.id_agenda' => [
-
+                    'numeric',
+                    'required'
                 ],
             ]
         );
 
+        $atribute = array_key_exists("atribute",$data['surat-keluar']);
 
-        $data['surat-keluar']['atribute']['data'] = collect($data['surat-keluar']['atribute']['data'])
-        ->map(function($data,$key) use ($datas_surat){
+        if($atribute){
 
-            return[
-                'key' => $data,
-                'type' => $datas_surat->where('key','=',$data)->first()->type
-            ];
-        })->toArray();
+            $data['surat-keluar']['atribute']['data'] = collect($data['surat-keluar']['atribute']['data'])
+                ->map(function($data,$key) use ($datas_surat){
+
+                    return[
+                        'key' => $data,
+                        'type' => $datas_surat->where('key','=',$data)->first()->type
+                    ];
+                })->toArray();
+        } else{
+
+            $data['surat-keluar']['atribute']['data'] = [];
+        }
 
         $data['surat-keluar']['atribute'] = json_encode($data['surat-keluar']['atribute']);
 
@@ -222,13 +258,13 @@ class SuratKeluarEditScreen extends Screen
             $suratKeluar->attachment()->save($attachment);
         }
 
-        Toast::info('Suarat berhasil di simpan');
+        Toast::info('Edit Data Berhasil');
     }
 
     public function remove(SuratKeluar $suratKeluar,Request $request){
         $suratKeluar->delete();
 
-        Toast::info('Surat berhasil di hapus');
+        Toast::info('Hapus Data berhasil');
 
         return redirect()->route('platform.surat-keluars');
     }

@@ -101,11 +101,11 @@ class PendudukEditScreen extends Screen
                     'unique:penduduks,NIK,'.$penduduk->id
                 ],
                 'penduduk.name' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'penduduk.place_of_birth' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'penduduk.date_of_birth' => [
@@ -115,17 +115,17 @@ class PendudukEditScreen extends Screen
                     'before:tomorrow',
                 ],
                 'penduduk.gender' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'in:pria,wanita',
                     'required'
                 ],
                 'penduduk.blood' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'in:A,B,O,AB',
                     'required'
                 ],
                 'penduduk.address' => [
-                    'regex:/[a-zA-Z0-9\s]+/',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'penduduk.rt' => [
@@ -137,33 +137,33 @@ class PendudukEditScreen extends Screen
                     'required'
                 ],
                 'penduduk.kelurahan_desa' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'penduduk.kecamatan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'penduduk.religion' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'in:islam,kristen',
                     'required'
                 ],
                 'penduduk.status_perkawinan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     Rule::in(['sendiri', 'menikah']),
                     'required'
                 ],
                 'penduduk.profession' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'penduduk.kewerganegaraan' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
                 'penduduk.education' => [
-                    'regex:/^[\pL\s\-]+$/u',
+                    'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'required'
                 ],
 

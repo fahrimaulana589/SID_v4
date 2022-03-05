@@ -46,7 +46,7 @@ Route::screen('surats-masuk/{surat}/data',SuratShowScreen::class)
             ->push('Data',route('platform.surat-masuks.show',$surat));
     });
 
-Route::screen('surat-keluars',SuratKeluarListScreen::class)
+Route::screen('surat-keluar',SuratKeluarListScreen::class)
     ->name('platform.surat-keluars')
     ->breadcrumbs(function (Trail $trail){
         return $trail
@@ -54,15 +54,15 @@ Route::screen('surat-keluars',SuratKeluarListScreen::class)
             ->push('Data Surat Keluar',route('platform.surat-keluars'));
         });
 
-Route::screen('surat-keluars/create',SuratKeluarEditScreen::class)
+Route::screen('surat-keluar/buat',SuratKeluarEditScreen::class)
     ->name('platform.surat-keluars.create')
     ->breadcrumbs(function (Trail $trail){
         return $trail
             ->parent('platform.surat-keluars')
-            ->push('Create',route('platform.surat-keluars.create'));
+            ->push('Buat',route('platform.surat-keluars.create'));
     });
 
-Route::screen('surat-keluars/{surat_keluar}/edit',SuratKeluarEditScreen::class)
+Route::screen('surat-keluar/{surat_keluar}/edit',SuratKeluarEditScreen::class)
     ->name('platform.surat-keluars.edit')
     ->breadcrumbs(function (Trail $trail,$surat_keluar){
         return $trail
@@ -70,27 +70,27 @@ Route::screen('surat-keluars/{surat_keluar}/edit',SuratKeluarEditScreen::class)
             ->push('Edit',route('platform.surat-keluars.edit',$surat_keluar));
     });
 
-Route::screen('surat-keluars/{surat_keluar}/datas',SuratKeluarShowScreen::class)
+Route::screen('surat-keluar/{surat_keluar}/data',SuratKeluarShowScreen::class)
     ->name('platform.surat-keluars.show')
     ->breadcrumbs(function (Trail $trail,$surat_keluar){
         return $trail
             ->parent('platform.surat-keluars')
-            ->push('Data Surat',route('platform.surat-keluars.show',$surat_keluar));
+            ->push('Data',route('platform.surat-keluars.show',$surat_keluar));
     });
 
-Route::screen('surat-keluars/{surat_keluar}/datas/create',SuratKeluarDataEditScreen::class)
+Route::screen('surat-keluar/{surat_keluar}/data/buat',SuratKeluarDataEditScreen::class)
     ->name('platform.surat-keluars.datas.create')
     ->breadcrumbs(function (Trail $trail,$surat_keluar){
         return $trail
             ->parent('platform.surat-keluars.show',$surat_keluar)
-            ->push('Create',route('platform.surat-keluars.datas.create',$surat_keluar));
+            ->push('Buat',route('platform.surat-keluars.datas.create',$surat_keluar));
     });
 
-Route::screen('surat-keluars/{surat_keluar}/datas/{data}/edit',SuratKeluarDataEditScreen::class)
+Route::screen('surat-keluar/{surat_keluar}/data/{data}/edit',SuratKeluarDataEditScreen::class)
     ->name('platform.surat-keluars.datas.edit')
     ->breadcrumbs(function (Trail $trail,$surat_keluar,$data){
         return $trail
             ->parent('platform.surat-keluars.show',$surat_keluar)
-            ->push('Create',route('platform.surat-keluars.datas.edit',[$surat_keluar,$data]));
+            ->push('Edit',route('platform.surat-keluars.datas.edit',[$surat_keluar,$data]));
     });
 
