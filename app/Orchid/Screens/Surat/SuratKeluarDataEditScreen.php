@@ -155,7 +155,7 @@ class SuratKeluarDataEditScreen extends Screen
                     'required'
                 ],
                 'surat_keluar_data.atribute.data' => [
-                    'required'
+
                 ],
 
             ]
@@ -164,33 +164,46 @@ class SuratKeluarDataEditScreen extends Screen
         $dataAgenda = $request->validate(
             [
                 'dataAgenda.atribute.data' => [
-                    'required'
+
                 ],
             ]
         );
 
         $datas_surat = AtributeData::all();
 
-        $data['surat_keluar_data']['atribute']['data'] = collect($data['surat_keluar_data']['atribute']['data'])
-        ->map(function($data,$key) use ($datas_surat){
+        $atribute = array_key_exists("atribute",$data['surat_keluar_data']);
 
-            return[
-                'key' => $key,
-                'type' => $datas_surat->where('key','=',$key)->first()->type,
-                'value' => $data
-            ];
-        })->toArray();
 
-        $dataAgenda['dataAgenda']['atribute']['data'] = collect($dataAgenda['dataAgenda']['atribute']['data'])
-        ->map(function($data,$key) use ($datas_surat){
+        if($atribute){
+            $data['surat_keluar_data']['atribute']['data'] = collect($data['surat_keluar_data']['atribute']['data'])
+            ->map(function($data,$key) use ($datas_surat){
 
-            return[
-                'key' => $key,
-                'type' => $datas_surat->where('key','=',$key)->first()->type,
-                'value' => $data
-            ];
-        })->toArray();
+                return[
+                    'key' => $key,
+                    'type' => $datas_surat->where('key','=',$key)->first()->type,
+                    'value' => $data
+                ];
+            })->toArray();
+        }
+        else{
+            $data['surat_keluar_data']['atribute']['data'] = [];
+        }
 
+        $is_data_agenda = array_key_exists("dataAgenda",$dataAgenda);
+
+        if($is_data_agenda){
+            $dataAgenda['dataAgenda']['atribute']['data'] = collect($dataAgenda['dataAgenda']['atribute']['data'])
+            ->map(function($data,$key) use ($datas_surat){
+
+                return[
+                    'key' => $key,
+                    'type' => $datas_surat->where('key','=',$key)->first()->type,
+                    'value' => $data
+                ];
+            })->toArray();
+        }else{
+            $dataAgenda['dataAgenda']['atribute']['data'] = [];
+        }
 
         $data['surat_keluar_data']['atribute'] = json_encode($data['surat_keluar_data']['atribute']);
 
@@ -216,7 +229,7 @@ class SuratKeluarDataEditScreen extends Screen
         $data = $request->validate(
             [
                 'surat_keluar_data.no_surat' => [
-                    'unique:data_agendas,no_surat,'.$surat_data_keluar->id,
+                    'unique:data_agendas,no_surat,'.$surat_data_keluar->agendaData->id,
                     'regex:/^\d{1,}\/\d{1,}\/\d{4}$/',
                     'required'
                 ],
@@ -233,7 +246,7 @@ class SuratKeluarDataEditScreen extends Screen
                     'required'
                 ],
                 'surat_keluar_data.atribute.data' => [
-                    'required'
+
                 ],
 
             ]
@@ -242,32 +255,46 @@ class SuratKeluarDataEditScreen extends Screen
         $dataAgenda = $request->validate(
             [
                 'dataAgenda.atribute.data' => [
-                    'required'
+
                 ],
             ]
         );
 
         $datas_surat = AtributeData::all();
 
-        $data['surat_keluar_data']['atribute']['data'] = collect($data['surat_keluar_data']['atribute']['data'])
-        ->map(function($data,$key) use ($datas_surat){
+        $atribute = array_key_exists("atribute",$data['surat_keluar_data']);
 
-            return[
-                'key' => $key,
-                'type' => $datas_surat->where('key','=',$key)->first()->type,
-                'value' => $data
-            ];
-        })->toArray();
 
-        $dataAgenda['dataAgenda']['atribute']['data'] = collect($dataAgenda['dataAgenda']['atribute']['data'])
-        ->map(function($data,$key) use ($datas_surat){
+        if($atribute){
+            $data['surat_keluar_data']['atribute']['data'] = collect($data['surat_keluar_data']['atribute']['data'])
+            ->map(function($data,$key) use ($datas_surat){
 
-            return[
-                'key' => $key,
-                'type' => $datas_surat->where('key','=',$key)->first()->type,
-                'value' => $data
-            ];
-        })->toArray();
+                return[
+                    'key' => $key,
+                    'type' => $datas_surat->where('key','=',$key)->first()->type,
+                    'value' => $data
+                ];
+            })->toArray();
+        }
+        else{
+            $data['surat_keluar_data']['atribute']['data'] = [];
+        }
+
+        $is_data_agenda = array_key_exists("dataAgenda",$dataAgenda);
+
+        if($is_data_agenda){
+            $dataAgenda['dataAgenda']['atribute']['data'] = collect($dataAgenda['dataAgenda']['atribute']['data'])
+            ->map(function($data,$key) use ($datas_surat){
+
+                return[
+                    'key' => $key,
+                    'type' => $datas_surat->where('key','=',$key)->first()->type,
+                    'value' => $data
+                ];
+            })->toArray();
+        }else{
+            $dataAgenda['dataAgenda']['atribute']['data'] = [];
+        }
 
         $data['surat_keluar_data']['atribute'] = json_encode($data['surat_keluar_data']['atribute']);
 

@@ -8,6 +8,7 @@ use Orchid\Support\Color;
 use App\Models\SuratKeluar;
 use Orchid\Attachment\File;
 use App\Models\AtributeData;
+use App\Models\SuratKeluarData;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\Button;
@@ -37,8 +38,9 @@ class SuratKeluarEditScreen extends Screen
      *
      * @return array
      */
-    public function query(SuratKeluar $suratKeluar,Request $request): array
+    public function query(SuratKeluar $suratKeluar,SuratKeluarData $suratKeluarData,Request $request): array
     {
+
         session(['url_data' => ''.$request->url()]);
 
         $this->exist = $suratKeluar->exists;
@@ -125,7 +127,7 @@ class SuratKeluarEditScreen extends Screen
         $file = $request->validate(
             [
                 'surat-keluar.newtemplate' => [
-                    'mimes:docx',
+                    'mimes:doc,docx',
                     'required',
                 ],
             ]
@@ -193,8 +195,8 @@ class SuratKeluarEditScreen extends Screen
 
         $file = $request->validate(
             [
-                'surat-keluar.new_template' => [
-                    'mimes:docx'
+                'surat-keluar.newtemplate' => [
+                    'mimes:doc,docx'
                 ],
             ]
         );
@@ -226,6 +228,7 @@ class SuratKeluarEditScreen extends Screen
             ]
         );
 
+
         $atribute = array_key_exists("atribute",$data['surat-keluar']);
 
         if($atribute){
@@ -249,13 +252,14 @@ class SuratKeluarEditScreen extends Screen
 
         if(count($file) != 0){
 
-            $file = new File(group:"doct",file:$request->file('surat-keluar.new_template'));
+            $file = new File(group:"doct",file:$request->file('surat-keluar.newtemplate'));
 
             $attachment = $file->load();
 
             $suratKeluar->attachment('doct')->delete();
 
             $suratKeluar->attachment()->save($attachment);
+
         }
 
         Toast::info('Edit Data Berhasil');

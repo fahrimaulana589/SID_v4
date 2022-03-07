@@ -58,12 +58,10 @@ class SuratKeluarDataEditLayout extends Rows
         ];
 
         $exist = $this->query->get('exist');
-
         $data = $this->query->get('surat_keluar')->atribute;
+        $data_surat = $this->query->get('surat_keluar_data')->atribute;
 
-
-        if($exist ){
-            $data_surat = $this->query->get('surat_keluar_data')->atribute;
+        if($exist && $data_surat != '{"data":[]}'){
 
             $data_surat = str_replace("'",'"',$data_surat);
 
@@ -74,7 +72,7 @@ class SuratKeluarDataEditLayout extends Rows
         else{
             $data_surat = [];
         }
-
+        
         $data = str_replace("'",'"',$data);
 
         if($data == '{"data":[]}'){
