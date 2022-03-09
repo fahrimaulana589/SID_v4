@@ -20,4 +20,3 @@ Route::get('/', function () {
 
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/download',[SuratKeluarController::class,'download'])->name('download');
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/print',[SuratKeluarController::class,'print'])->name('print');
-

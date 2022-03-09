@@ -38,8 +38,8 @@ class SuratKeluarController extends Controller
         $url = route('download',[$surat_keluar->id, $surat_data_keluar]);
         return redirect()->away("https://docs.google.com/viewerng/viewer?url={$url}");
     }
-    
-    
+
+
 
     private function penduduk($data_surat){
 
@@ -94,16 +94,26 @@ class SuratKeluarController extends Controller
 
         $data_surat = $data_surat->atribute;
 
-        $data_surat = str_replace("'",'"',$data_surat);
+        if($data_surat != '{"data":[]}'){
+            $data_surat = str_replace("'",'"',$data_surat);
 
-        $data_surat =  json_decode($data_surat);
-        $data_surat =  get_object_vars($data_surat->data);
+            $data_surat =  json_decode($data_surat);
+            $data_surat =  get_object_vars($data_surat->data);
+        }else{
+            $data_surat = [];
+        }
 
         $data = $surat_keluar->atribute;
-        $data = str_replace("'",'"',$data);
 
-        $data =  json_decode($data);
-        $data =  get_object_vars($data->data);
+
+        if($data != '{"data":[]}'){
+            $data = str_replace("'",'"',$data);
+
+            $data =  json_decode($data);
+            $data =  get_object_vars($data->data);
+        }else{
+            $data = [];
+        }
 
         $data = collect($data_surat)->flatMap(function($value,$key) use ($data) {
             $data_key = array_keys($data);
