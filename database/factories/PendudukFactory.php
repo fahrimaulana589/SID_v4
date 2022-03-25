@@ -14,7 +14,7 @@ class PendudukFactory extends Factory
     public function definition()
     {
         return [
-            'NIK' => $this->faker->numerify('##########'),
+            'NIK' => $this->faker->numerify('################'),
             'name' => $this->faker->name(),
             'place_of_birth' => $this->faker->city(),
             'date_of_birth' => $this->faker->date(),

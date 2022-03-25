@@ -94,7 +94,7 @@ class KeluargaEditScreen extends Screen
         ];
     }
 
-    public function save(Keluarga $keluarga,Request $request){
+    public function save(Request $request,Keluarga $keluarga){
 
         $data_kepala = $request->validate([
             'kepala.name_ayah' => [
