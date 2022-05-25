@@ -54,8 +54,6 @@ class SuratKeluarDataEditScreen extends Screen
             $this->dataAgenda = $surat_data_keluar->agendaData;
         }
 
-
-
         return [
             'exist' =>  $this->exist,
             'agenda' => $suratKeluar->agenda,

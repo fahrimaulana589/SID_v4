@@ -81,7 +81,7 @@ class SuratKeluarEditLayout extends Rows
 
         $datas = $this->query->get('data_atribute');
         $datas_surat = $this->query->get('surat-keluar')->atribute;
-        
+
         if (count($datas) == 0) {
             return [];
         }
