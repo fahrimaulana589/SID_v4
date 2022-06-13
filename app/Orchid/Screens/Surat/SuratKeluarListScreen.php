@@ -15,9 +15,9 @@ class SuratKeluarListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Data Surat Keluar';
+    public $name = 'Data Pelayanan Surat';
 
-    public $description = 'Data surat keluar desa karanganyar';
+    public $description = 'Data pelayanan surat';
 
     public $permission = 'platform.systems.surat';
 

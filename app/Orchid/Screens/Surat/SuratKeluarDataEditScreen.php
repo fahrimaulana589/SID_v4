@@ -124,6 +124,7 @@ class SuratKeluarDataEditScreen extends Screen
             Layout::block(DataAgendaKeperluanLayout::class)
                 ->title('Data Agenda')
                 ->description('Silahkan masukan data agenda')
+                ->canSee($this->dataAgenda->atribute != '{"data":[]}')
                 ->commands(
                     Button::make('Simpan')
                         ->icon('check')

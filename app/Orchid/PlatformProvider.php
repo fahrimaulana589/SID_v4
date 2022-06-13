@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid;
 
+use Illuminate\Support\Facades\Auth;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
@@ -29,8 +30,12 @@ class PlatformProvider extends OrchidServiceProvider
     {
         $bool = false;
 
-
         return [
+            Menu::make('Pelayanan')
+                ->icon('info')
+                ->route('platform.warga.pelayanan')
+                ->title('Module')
+                ->canSee(!Auth::hasUser()),
 
             Menu::make('Data Agenda')
                 ->icon('info')
@@ -38,19 +43,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->title('Module')
                 ->permission('platform.systems.agenda'),
 
-            Menu::make('Data Surat')
+            Menu::make('Pelayanan')
                 ->icon('info')
-                ->list([
-                    Menu::make('Surat Masuk')
-                        ->icon('info')
-                        ->route('platform.surat-masuks')
-                        ->permission('platform.systems.surat'),
+                ->route('platform.surat-keluars')
+                ->permission('platform.systems.surat'),
 
-                    Menu::make('Surat Keluar')
-                        ->icon('info')
-                        ->route('platform.surat-keluars')
-                        ->permission('platform.systems.surat'),
-                ]),
 
             Menu::make('Data Penduduk')
                 ->icon('info')
