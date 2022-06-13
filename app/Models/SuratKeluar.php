@@ -26,6 +26,7 @@ class SuratKeluar extends Model
         'description',
         'atribute',
         'no_surat',
+        'syarat',
         'id_agenda',
     ];
 
@@ -74,6 +75,6 @@ class SuratKeluar extends Model
         return $this->belongsTo(Agenda::class,'id_agenda');
     }
 
-    
+
 
 }

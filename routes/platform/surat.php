@@ -46,12 +46,12 @@ Route::screen('surats-masuk/{surat}/data',SuratShowScreen::class)
             ->push('Data',route('platform.surat-masuks.show',$surat));
     });
 
-Route::screen('surat-keluar',SuratKeluarListScreen::class)
+Route::screen('pelayanan-surat',SuratKeluarListScreen::class)
     ->name('platform.surat-keluars')
     ->breadcrumbs(function (Trail $trail){
         return $trail
             ->parent('platform.index')
-            ->push('Data Surat Keluar',route('platform.surat-keluars'));
+            ->push('Data Pelayanan Surat',route('platform.surat-keluars'));
         });
 
 Route::screen('surat-keluar/buat',SuratKeluarEditScreen::class)

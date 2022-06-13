@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Surat;
 
+use App\Orchid\Layouts\User\SuratKeluarEdit2Layout;
 use mysqli;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
@@ -47,7 +48,7 @@ class SuratKeluarEditScreen extends Screen
 
         $data = $suratKeluar->atribute;
 
-        $this->name = !$this->exist ? 'Tambah Surat Keluar' : 'Edit Surat Keluar';
+        $this->name = !$this->exist ? 'Tambah Pelayanan Surat' : 'Edit Pelayanan Surat';
 
         return [
             'surat-keluar' =>$suratKeluar,
@@ -108,7 +109,7 @@ class SuratKeluarEditScreen extends Screen
         return [
             Layout::view('components.data',$data),
             Layout::block(SuratKeluarEditLayout::class)
-                ->title('Surat Masuk')
+                ->title('Pelayanan Surat')
                 ->description('Silahkan masukan data surat')
                 ->commands(
                     Button::make('Simpan')
@@ -117,6 +118,7 @@ class SuratKeluarEditScreen extends Screen
                         ->method('edit')
                         ->canSee($this->exist),
                 ),
+            SuratKeluarEdit2Layout::class
         ];
     }
 
@@ -142,6 +144,9 @@ class SuratKeluarEditScreen extends Screen
                 ],
                 'surat-keluar.description' => [
                     'regex:/^[a-zA-Z0-9\s_().,]+$/',
+                    'required'
+                ],
+                'surat-keluar.syarat' => [
                     'required'
                 ],
                 'surat-keluar.no_surat' => [
@@ -210,6 +215,9 @@ class SuratKeluarEditScreen extends Screen
                 ],
                 'surat-keluar.description' => [
                     'regex:/^[a-zA-Z0-9\s_().,]+$/',
+                    'required'
+                ],
+                'surat-keluar.syarat' => [
                     'required'
                 ],
                 'surat-keluar.no_surat' => [

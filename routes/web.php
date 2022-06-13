@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\SuratKeluarController;
+use App\Orchid\Screens\Surat\SuratKeluarEditScreen;
+use App\Orchid\Screens\Warga\PelayananListScreen;
+use App\Orchid\Screens\Warga\PelayananShowScreen;
 use Illuminate\Support\Facades\Route;
+use Tabuna\Breadcrumbs\Trail;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +22,14 @@ Route::get('/', function () {
     return redirect('admin/profile');
 });
 
+
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/download',[SuratKeluarController::class,'download'])->name('download');
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/print',[SuratKeluarController::class,'print'])->name('print');
+
+Route::screen('warga/pelayanan/{pelayanan}', PelayananShowScreen::class)
+    ->name('platform.warga.pelayanan.show');
+
+
+Route::screen('warga/pelayanan',PelayananListScreen::class)
+    ->name('platform.warga.pelayanan');
+
