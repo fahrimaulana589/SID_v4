@@ -24,6 +24,7 @@ class PelayananShowScreen extends Screen
      */
     public function query(SuratKeluar $pelayanan): array
     {
+        dd();
         $this->suratKeluar = $pelayanan;
         $this->name = $pelayanan->title;
         return [];
@@ -39,6 +40,7 @@ class PelayananShowScreen extends Screen
         return [
             Link::make("Buat")
                 ->icon("plus")
+//                ->route("platform.warga.pelayanan.show.add",$this->suratKeluar->id)
         ];
     }
 
