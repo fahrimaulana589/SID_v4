@@ -1,3 +1,3 @@
 <p class="small m-n">
-    © Copyright {{date('Y')}} Desa Karanganyar
+    © Copyright {{date('Y')}} Desa Adiwerna
 </p>

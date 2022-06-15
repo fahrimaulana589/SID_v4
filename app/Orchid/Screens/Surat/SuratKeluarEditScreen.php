@@ -39,10 +39,10 @@ class SuratKeluarEditScreen extends Screen
      *
      * @return array
      */
-    public function query(SuratKeluar $suratKeluar,SuratKeluarData $suratKeluarData,Request $request): array
+    public function query(SuratKeluar $suratKeluar, SuratKeluarData $suratKeluarData, Request $request): array
     {
 
-        session(['url_data' => ''.$request->url()]);
+        session(['url_data' => '' . $request->url()]);
 
         $this->exist = $suratKeluar->exists;
 
@@ -51,7 +51,7 @@ class SuratKeluarEditScreen extends Screen
         $this->name = !$this->exist ? 'Tambah Pelayanan Surat' : 'Edit Pelayanan Surat';
 
         return [
-            'surat-keluar' =>$suratKeluar,
+            'surat-keluar' => $suratKeluar,
             'exist' => $this->exist,
             'data_atribute' => AtributeData::all()
         ];
@@ -107,7 +107,7 @@ class SuratKeluarEditScreen extends Screen
         ];
 
         return [
-            Layout::view('components.data',$data),
+            Layout::view('components.data', $data),
             Layout::block(SuratKeluarEditLayout::class)
                 ->title('Pelayanan Surat')
                 ->description('Silahkan masukan data surat')
@@ -122,7 +122,8 @@ class SuratKeluarEditScreen extends Screen
         ];
     }
 
-    public function save(Request $request){
+    public function save(Request $request)
+    {
 
         $datas_surat = AtributeData::all();
 
@@ -137,7 +138,7 @@ class SuratKeluarEditScreen extends Screen
 
         $data = $request->validate(
             [
-                'surat-keluar.title' =>[
+                'surat-keluar.title' => [
                     'required',
                     'regex:/^[a-zA-Z0-9\s_().,]+$/',
                     'unique:surat_keluars,title',
@@ -165,18 +166,18 @@ class SuratKeluarEditScreen extends Screen
             ]
         );
 
-        $atribute = array_key_exists("atribute",$data['surat-keluar']);
+        $atribute = array_key_exists("atribute", $data['surat-keluar']);
 
-        if($atribute){
+        if ($atribute) {
             $data['surat-keluar']['atribute']['data'] = collect($data['surat-keluar']['atribute']['data'])
-                ->map(function($data,$key) use ($datas_surat){
+                ->map(function ($data, $key) use ($datas_surat) {
 
-                    return[
+                    return [
                         'key' => $data,
-                        'type' => $datas_surat->where('key','=',$data)->first()->type
+                        'type' => $datas_surat->where('key', '=', $data)->first()->type
                     ];
                 })->toArray();
-        }else{
+        } else {
             $data['surat-keluar']['atribute']['data'] = [];
         }
 
@@ -184,7 +185,7 @@ class SuratKeluarEditScreen extends Screen
 
         $surat = SuratKeluar::create($data['surat-keluar']);
 
-        $file = new File($request->file('surat-keluar.newtemplate'),null,"doct");
+        $file = new File($request->file('surat-keluar.newtemplate'), null, "doct");
 
         $attachment = $file->load();
 
@@ -192,10 +193,11 @@ class SuratKeluarEditScreen extends Screen
 
         Toast::info('Simpan Data Berhasil');
 
-        return redirect()->route('platform.surat-keluars.edit',$surat->id);
+        return redirect()->route('platform.surat-keluars.edit', $surat->id);
     }
 
-    public function edit(SuratKeluar $suratKeluar,Request $request){
+    public function edit(SuratKeluar $suratKeluar, Request $request)
+    {
         $datas_surat = AtributeData::all();
 
         $file = $request->validate(
@@ -208,10 +210,10 @@ class SuratKeluarEditScreen extends Screen
 
         $data = $request->validate(
             [
-                'surat-keluar.title' =>[
+                'surat-keluar.title' => [
                     'required',
                     'regex:/^[a-zA-Z0-9\s_().,]+$/',
-                    'unique:surat_keluars,title,'.$suratKeluar->id,
+                    'unique:surat_keluars,title,' . $suratKeluar->id,
                 ],
                 'surat-keluar.description' => [
                     'regex:/^[a-zA-Z0-9\s_().,]+$/',
@@ -223,7 +225,7 @@ class SuratKeluarEditScreen extends Screen
                 'surat-keluar.no_surat' => [
                     'numeric',
                     'required',
-                    'unique:surat_keluars,no_surat,'.$suratKeluar->id,
+                    'unique:surat_keluars,no_surat,' . $suratKeluar->id,
                 ],
                 'surat-keluar.atribute.data.*' => [
                     'regex:/^[a-zA-Z0-9\s_().,]+$/',
@@ -237,19 +239,19 @@ class SuratKeluarEditScreen extends Screen
         );
 
 
-        $atribute = array_key_exists("atribute",$data['surat-keluar']);
+        $atribute = array_key_exists("atribute", $data['surat-keluar']);
 
-        if($atribute){
+        if ($atribute) {
 
             $data['surat-keluar']['atribute']['data'] = collect($data['surat-keluar']['atribute']['data'])
-                ->map(function($data,$key) use ($datas_surat){
+                ->map(function ($data, $key) use ($datas_surat) {
 
-                    return[
+                    return [
                         'key' => $data,
-                        'type' => $datas_surat->where('key','=',$data)->first()->type
+                        'type' => $datas_surat->where('key', '=', $data)->first()->type
                     ];
                 })->toArray();
-        } else{
+        } else {
 
             $data['surat-keluar']['atribute']['data'] = [];
         }
@@ -258,9 +260,9 @@ class SuratKeluarEditScreen extends Screen
 
         $suratKeluar->fill($data['surat-keluar'])->save();
 
-        if(count($file) != 0){
+        if (count($file) != 0) {
 
-            $file = new File($request->file('surat-keluar.newtemplate'),null,"doct");
+            $file = new File($request->file('surat-keluar.newtemplate'), null, "doct");
 
             $attachment = $file->load();
 
@@ -273,7 +275,8 @@ class SuratKeluarEditScreen extends Screen
         Toast::info('Edit Data Berhasil');
     }
 
-    public function remove(SuratKeluar $suratKeluar,Request $request){
+    public function remove(SuratKeluar $suratKeluar, Request $request)
+    {
         $suratKeluar->delete();
 
         Toast::info('Hapus Data berhasil');
@@ -281,56 +284,56 @@ class SuratKeluarEditScreen extends Screen
         return redirect()->route('platform.surat-keluars');
     }
 
-    public function Penduduk(){
+    public function Penduduk()
+    {
         $penduduk_table = Schema::getColumnListing('penduduks');
+        $penduduk_table = collect($penduduk_table)
+            ->filter(function ($data) {
+                return
+                    $data != 'id' &&
+                    $data != 'created_at' &&
+                    $data != 'updated_at' &&
+                    $data != 'id_keluarga' &&
+                    $data != 'status_keluarga' &&
+                    $data != 'name_ayah' &&
+                    $data != 'name_ibu' && true;
+            })
+            ->map(function ($data, $key) {
+                $title = [
+                    "NIK",
+                    "id_keluarga",
+                    "status_keluarga",
+                    "name_ayah",
+                    "name_ibu",
+                    "Nama",
+                    "Tempat_lahir",
+                    "Tanggal_lahir",
+                    "Jenis_kelamin",
+                    "Golongan_darah",
+                    "Alamat",
+                    "Rt",
+                    "Rt",
+                    "Kelurahan_desa",
+                    "Kecamatan",
+                    "Agama",
+                    "Status_perkawinan",
+                    "Pekerjaan",
+                    "Kewerganegaraan",
+                    "Pendidikan"
+                ];
 
-        $penduduk_table =   collect($penduduk_table)
-                            ->filter(function ($data) {
-                                return
-                                $data != 'id' &&
-                                $data != 'created_at' &&
-                                $data != 'updated_at' &&
-                                $data != 'id_keluarga' &&
-                                $data != 'status_keluarga' &&
-                                $data != 'name_ayah' &&
-                                $data != 'name_ibu' && true;
-                            })
-                            ->map(function ($data,$key){
-                                $title = [
-                                    "NIK",
-                                    "id_keluarga",
-                                    "status_keluarga",
-                                    "name_ayah",
-                                    "name_ibu",
-                                    "Nama",
-                                    "Tempat_lahir",
-                                    "Tanggal_lahir",
-                                    "Jenis_kelamin",
-                                    "Golongan_darah",
-                                    "Alamat",
-                                    "Rt",
-                                    "Rt",
-                                    "Kelurahan_desa",
-                                    "Kecamatan",
-                                    "Agama",
-                                    "Status_perkawinan",
-                                    "Pekerjaan",
-                                    "Kewerganegaraan",
-                                    "Pendidikan"
-                                ];
-
-                                return [
-                                    'title' => $title[$key-1],
-                                    'key' => $data
-                                ];
-                            });
-
+                return [
+                    'title' => $title[$key - 1],
+                    'key' => $data
+                ];
+            });
 
 
         return $penduduk_table;
     }
 
-    public function surat() : array{
+    public function surat(): array
+    {
         $datas_surat = [
             [
                 'title' => 'No_surat',
