@@ -39,7 +39,7 @@ class SuratKeluarEditScreen extends Screen
      *
      * @return array
      */
-    public function query(SuratKeluar $suratKeluar, SuratKeluarData $suratKeluarData, Request $request): array
+    public function query(SuratKeluar $suratKeluar,SuratKeluarData $suratKeluarData, Request $request): array
     {
 
         session(['url_data' => '' . $request->url()]);
