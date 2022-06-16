@@ -58,7 +58,7 @@ class PelayananAddLayout extends Rows
 
             if($data[$item]->type == 'multitext'){
                 array_push($field,
-                    TextArea::make("pelayanan.atribute.data.{$data[$item]->key}")
+                    TextArea::make("pelayanan.attribute.data.{$data[$item]->key}")
                         ->title($item)
                         ->required()
                         ->value($value)
@@ -67,7 +67,7 @@ class PelayananAddLayout extends Rows
             }
             else if($data[$item]->type == 'text'){
                 array_push($field,
-                    Input::make("pelayanan.atribute.data.{$data[$item]->key}")
+                    Input::make("pelayanan.attribute.data.{$data[$item]->key}")
                         ->title($item)
                         ->required()
                         ->value($value)

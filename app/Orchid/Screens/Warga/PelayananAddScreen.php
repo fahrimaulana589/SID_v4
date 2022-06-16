@@ -68,25 +68,23 @@ class PelayananAddScreen extends Screen
     {
         $data = $request->all();
 
-//        $data = $request->validate(
-//            [
-//                'pelayanan.nik' => [
-//                    'exists:penduduks,NIK',
-//                    'required'
-//                ],
-//                'pelayanan.keprluan' => [
-//                    'required'
-//                ],
-//                'pelayanan.image' => [
-//                    'mimes:jpg,jpeg,gif,JPG',
-//                    'required'
-//                ]
-//            ]
-//        );
+        $data = $request->validate(
+            [
+                'pelayanan.nik_penduduks' => [
+                    'exists:penduduks,NIK',
+                    'required'
+                ],
+                'pelayanan.keperluan' => [
+                    'required'
+                ],
+                'pelayanan.images' => [
+                    'required'
+                ]
+            ]
+        );
 
         $datas_surat = AtributeData::all();
-        $atribute = array_key_exists("atribute",$data['pelayanan']);
-
+        $atribute = array_key_exists("attribute",$data['pelayanan']);
 
         if($atribute){
             $data['pelayanan']['atribute']['data'] = collect($data['pelayanan']['atribute']['data'])
@@ -100,28 +98,24 @@ class PelayananAddScreen extends Screen
                 })->toArray();
         }
         else{
-            $data['pelayanan']['atribute']['data'] = [];
+            $data['pelayanan']['attribute']['data'] = [];
         }
 
-        $collection = collect($data["pelayanan"]["images"]);
-
-        $data['pelayanan']['images'] = $collection->implode(function ($item){
+        $value = "";
+        foreach ($data["pelayanan"]["images"] as $item) {
             $file = new File($item);
             $attachment = $file->load();
-            return "$attachment->path$attachment->name.$attachment->extension";
-        },"|");
+            $value .= "$attachment->path$attachment->name.$attachment->extension|";
+        }
+        $data['pelayanan']['images'] = $value;
 
-        $data['pelayanan']['atribute'] = json_encode($data['pelayanan']['atribute']);
+        $data['pelayanan']['attribute'] = json_encode($data['pelayanan']['attribute']);
 
         $data['pelayanan']['id_surat_keluar'] = $pelayanan->id;
 
         $data['pelayanan']['status'] = "diterima";
 
-        dd($data['pelayanan']);
-
         Pelayanan::create($data["pelayanan"]);
-
-        dd($data);
 
         Toast::success("Simpan Sukses");
     }
