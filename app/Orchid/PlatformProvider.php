@@ -46,7 +46,12 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Pelayanan')
                 ->icon('info')
                 ->route('platform.surat-keluars')
-                ->permission('platform.systems.surat'),
+                ->permission('platform.systems.pelayanan'),
+
+            Menu::make('Pelayanan Masuk')
+                ->icon('info')
+                ->route('platform.pelayanan.masuk')
+                ->permission('platform.systems.pelayanan'),
 
 
             Menu::make('Data Penduduk')
@@ -114,6 +119,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->addPermission('platform.systems.data.edit', __('Data Edit'))
                 ->addPermission('platform.systems.perangkat', __('Perangkat'))
                 ->addPermission('platform.systems.perangkat.edit', __('Perangkat Edit'))
+                ->addPermission('platform.systems.pelayanan', __('Pelayanan'))
 
             ];
     }

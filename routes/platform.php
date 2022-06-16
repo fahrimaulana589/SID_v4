@@ -27,6 +27,7 @@ include_once('platform/penduduk.php');
 include_once('platform/keluarga.php');
 include_once('platform/atribute.php');
 include_once('platform/perangkat_desa.php');
+include_once('platform/pelayanan.php');
 
 
 

@@ -4,9 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Access\RoleAccess;
+use Orchid\Filters\Filterable;
+use Orchid\Metrics\Chartable;
+use Orchid\Screen\AsSource;
 
 class Pelayanan extends Model
 {
+    use RoleAccess, Filterable, AsSource, Chartable, HasFactory;
+
     protected $fillable = [
         'nik_penduduks',
         'id_surat_keluar',
@@ -53,4 +59,9 @@ class Pelayanan extends Model
         'updated_at',
         'created_at',
     ];
+
+    public function surat(){
+
+        return $this->belongsTo(SuratKeluar::class,"id_surat_keluar");
+    }
 }
