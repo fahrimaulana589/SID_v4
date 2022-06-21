@@ -5,6 +5,7 @@ use App\Orchid\Screens\Surat\SuratKeluarEditScreen;
 use App\Orchid\Screens\Warga\PelayananAddScreen;
 use App\Orchid\Screens\Warga\PelayananListScreen;
 use App\Orchid\Screens\Warga\PelayananShowScreen;
+use App\Orchid\Screens\Warga\PelayananaMasukCekScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -27,6 +28,9 @@ Route::get('/', function () {
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/download',[SuratKeluarController::class,'download'])->name('download');
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/print',[SuratKeluarController::class,'print'])->name('print');
 
+
+Route::screen('warga/cek/{pelayanan?}', PelayananaMasukCekScreen::class)
+    ->name('platform.warga.pelayanan.cek');
 
 Route::screen('warga/pelayanan/{pelayanan}/add', PelayananAddScreen::class)
     ->name('platform.warga.pelayanan.show.add');

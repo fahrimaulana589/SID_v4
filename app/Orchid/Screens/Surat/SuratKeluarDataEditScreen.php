@@ -133,7 +133,6 @@ class SuratKeluarDataEditScreen extends Screen
                 )
         ];
     }
-
     public function save(SuratKeluar $suratKeluar,Request $request){
         $data = $request->validate(
             [
@@ -222,7 +221,6 @@ class SuratKeluarDataEditScreen extends Screen
 
         return redirect()->route('platform.surat-keluars.show',$suratKeluar->id);
     }
-
     public function edit(SuratKeluar $suratKeluar,SuratKeluarData $surat_data_keluar,Request $request){
 
         $data = $request->validate(

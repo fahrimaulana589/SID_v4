@@ -34,7 +34,12 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Pelayanan')
                 ->icon('info')
                 ->route('platform.warga.pelayanan')
-                ->title('Module')
+                ->title('Warga')
+                ->canSee(!Auth::hasUser()),
+
+            Menu::make('Cek Surat')
+                ->icon('info')
+                ->route('platform.warga.pelayanan.cek')
                 ->canSee(!Auth::hasUser()),
 
             Menu::make('Data Agenda')

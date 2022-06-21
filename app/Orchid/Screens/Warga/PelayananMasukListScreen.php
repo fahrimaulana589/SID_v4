@@ -2,6 +2,8 @@
 
 namespace App\Orchid\Screens\Warga;
 
+use App\Models\Pelayanan;
+use App\Orchid\Layouts\Warga\PelayananMasukListLayout;
 use Orchid\Screen\Screen;
 
 class PelayananMasukListScreen extends Screen
@@ -11,7 +13,7 @@ class PelayananMasukListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'PelayananMasukListScreen';
+    public $name = 'Pelayanan masuk';
 
     /**
      * Query data.
@@ -20,7 +22,11 @@ class PelayananMasukListScreen extends Screen
      */
     public function query(): array
     {
-        return [];
+        return [
+            "pelayanan_masuk" => Pelayanan::filters()
+                ->defaultSort('id', 'desc')
+                ->paginate(10)
+        ];
     }
 
     /**
@@ -40,6 +46,8 @@ class PelayananMasukListScreen extends Screen
      */
     public function layout(): array
     {
-        return [];
+        return [
+            PelayananMasukListLayout::class,
+        ];
     }
 }

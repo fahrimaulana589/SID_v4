@@ -7,6 +7,7 @@ use App\Models\Pelayanan;
 use App\Models\SuratKeluar;
 use App\Orchid\Layouts\Warga\PelayananAddLayout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Orchid\Attachment\File;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -46,6 +47,7 @@ class PelayananAddScreen extends Screen
     {
         return [
             Button::make("Tambah")
+                ->icon("plus")
                 ->method("save")
         ];
     }
@@ -64,7 +66,7 @@ class PelayananAddScreen extends Screen
         ];
     }
 
-    public function save(SuratKeluar $pelayanan,Request $request)
+    public function save(SuratKeluar $pelayanan, Request $request)
     {
         $data = $request->all();
 
@@ -84,39 +86,52 @@ class PelayananAddScreen extends Screen
         );
 
         $datas_surat = AtributeData::all();
-        $atribute = array_key_exists("attribute",$data['pelayanan']);
+        $atribute = array_key_exists("attribute", $data['pelayanan']);
 
-        if($atribute){
+        if ($atribute) {
             $data['pelayanan']['atribute']['data'] = collect($data['pelayanan']['atribute']['data'])
-                ->map(function($data,$key) use ($datas_surat){
+                ->map(function ($data, $key) use ($datas_surat) {
 
-                    return[
+                    return [
                         'key' => $key,
-                        'type' => $datas_surat->where('key','=',$key)->first()->type,
+                        'type' => $datas_surat->where('key', '=', $key)->first()->type,
                         'value' => $data
                     ];
                 })->toArray();
-        }
-        else{
+        } else {
             $data['pelayanan']['attribute']['data'] = [];
         }
 
         $value = "";
+
+        $int = 1;
+        $jumlah_gambar = count($data["pelayanan"]["images"]);
+
         foreach ($data["pelayanan"]["images"] as $item) {
             $file = new File($item);
             $attachment = $file->load();
-            $value .= "$attachment->path$attachment->name.$attachment->extension|";
+            if ($int == $jumlah_gambar) {
+                $value .= "$attachment->path$attachment->name.$attachment->extension";
+            } else {
+                $value .= "$attachment->path$attachment->name.$attachment->extension|";
+                $int++;
+            }
         }
+
         $data['pelayanan']['images'] = $value;
 
         $data['pelayanan']['attribute'] = json_encode($data['pelayanan']['attribute']);
 
         $data['pelayanan']['id_surat_keluar'] = $pelayanan->id;
 
-        $data['pelayanan']['status'] = "diterima";
+        $data['pelayanan']['kode_unik'] = "K-" . Str::uuid();
+        $data['pelayanan']['status'] = "masuk";
+        $data["pelayanan"]["no_surat"] = "null";
 
-        Pelayanan::create($data["pelayanan"]);
+        $pelayanan = Pelayanan::create($data["pelayanan"]);
 
         Toast::success("Simpan Sukses");
+
+        return redirect()->route("platform.warga.pelayanan.cek",$pelayanan->kode_unik);
     }
 }
