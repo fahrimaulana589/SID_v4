@@ -13,6 +13,7 @@ class CreatePelayanansTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('pelayanans');
         Schema::create('pelayanans', function (Blueprint $table) {
             $table->id();
             $table->foreignId("nik_penduduks");
