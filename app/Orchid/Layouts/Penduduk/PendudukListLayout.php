@@ -46,7 +46,7 @@ class PendudukListLayout extends Table
                 ),
             TD::make('gender','Jenis Kelamin')
                 ->sort()
-                ->filter(
+                    ->filter(
                     Input::class
                 ),
             TD::make('blood','Golongan darah')
@@ -61,7 +61,7 @@ class PendudukListLayout extends Table
                 ),
             TD::make('rt_rw','RT/RW')
                 ->sort()
-                ->filter(
+                  ->filter(
                     Input::class
                 ),
             TD::make('kelurahan_desa','Keluarahan/Desa')

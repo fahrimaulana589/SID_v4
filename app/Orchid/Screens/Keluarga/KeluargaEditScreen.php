@@ -94,9 +94,7 @@ class KeluargaEditScreen extends Screen
         ];
     }
 
-    public function save(Request $request,$f,$keluarga){
-
-        dump($f);
+    public function save(Keluarga $keluarga,Request $request){
 
         $data_kepala = $request->validate([
             'kepala.name_ayah' => [
@@ -108,8 +106,6 @@ class KeluargaEditScreen extends Screen
                 'required'
             ],
         ]);
-
-        dd($keluarga);
 
         $data = $request->validate(
             [
@@ -175,7 +171,7 @@ class KeluargaEditScreen extends Screen
         $kepala->id_keluarga = $data_keluarga->id;
         $kepala->status_keluarga = "Kepala Rumah Tangga";
         $kepala->name_ayah = $data_kepala['kepala']['name_ayah'];
-        $kepala->name_ibu = $data_kepala['kepala']['name_ayah'];
+        $kepala->name_ibu = $data_kepala['kepala']['name_ibu'];
 
         $kepala->save();
 

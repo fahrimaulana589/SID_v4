@@ -104,7 +104,11 @@ class Penduduk extends Model
 
     public function getFullDateAttribute(){
 
-        $date = Carbon::parse($this->attributes['date_of_birth'])->isoFormat('dddd, d MMMM YYYY');
+        Carbon::setLocale("id");
+
+//        dd($this->attributes['date_of_birth']);
+
+        $date = Carbon::parse($this->attributes['date_of_birth'])->isoFormat('dddd, D MMMM YYYY');
 
         return "{$this->attributes['place_of_birth']} {$date}";
     }
