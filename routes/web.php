@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Orchid\Screens\Surat\SuratKeluarEditScreen;
 use App\Orchid\Screens\Warga\PelayananAddScreen;
@@ -20,10 +22,13 @@ use Tabuna\Breadcrumbs\Trail;
 |
 */
 
-Route::get('/', function () {
-    return redirect('admin/profile');
-});
+Route::get('/', [HomeController::class,"home"]);
 
+Route::get("page/{page}",[HomeController::class,"page"]);
+
+Route::get("pelayanan",[PelayananController::class,"show"])->name("pelayanan.show");
+Route::post("pelayanan",[PelayananController::class,"store"])->name("pelayanan.store");
+Route::get("pelayanan/{pelayanan}",[PelayananController::class,"pelayanan"])->name("pelayanan.pelayanan");
 
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/download',[SuratKeluarController::class,'download'])->name('download');
 Route::get('surat-keluars/{surat_keluar}/datas/{data}/print',[SuratKeluarController::class,'print'])->name('print');
@@ -40,5 +45,3 @@ Route::screen('warga/pelayanan/{pelayanan}', PelayananShowScreen::class)
 
 Route::screen('warga/pelayanan',PelayananListScreen::class)
     ->name('platform.warga.pelayanan');
-
-

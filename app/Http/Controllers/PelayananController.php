@@ -1,75 +1,26 @@
 <?php
 
-namespace App\Orchid\Screens\Warga;
+namespace App\Http\Controllers;
 
 use App\Models\AtributeData;
 use App\Models\Pelayanan;
 use App\Models\SuratKeluar;
-use App\Orchid\Layouts\Warga\PelayananAddLayout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Orchid\Attachment\File;
-use Orchid\Screen\Actions\Button;
-use Orchid\Screen\Screen;
-use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
-class PelayananAddScreen extends Screen
+class PelayananController extends Controller
 {
-    public SuratKeluar $suratKeluar;
-    /**
-     * Display header name.
-     *
-     * @var string
-     */
-    public $name = 'Tambah Pelayanan';
+    public function show(){
 
-    /**
-     * Query data.
-     *
-     * @return array
-     */
-    public function query(SuratKeluar $pelayanan): array
-    {
-        $this->suratKeluar = $pelayanan;
-        $this->name = "Tambah " . $pelayanan->title;
-        return [
-            "surat_keluar" => $this->suratKeluar
-        ];
+        $pelayanan = SuratKeluar::all();
+
+        return view("pages.pelayanan",["pelayanan"=>$pelayanan]);
     }
 
-    /**
-     * Button commands.
-     *
-     * @return \Orchid\Screen\Action[]
-     */
-    public function commandBar(): array
-    {
-        return [
-            Button::make("Tambah")
-                ->icon("plus")
-                ->method("save")
-        ];
-    }
-
-    /**
-     * Views.
-     *
-     * @return \Orchid\Screen\Layout[]|string[]
-     */
-    public function layout(): array
-    {
-        return [
-            Layout::block(PelayananAddLayout::class)
-                ->title("pelayanan")
-                ->description("Masukan data pelayanan anda")
-        ];
-    }
-
-    public function save(SuratKeluar $pelayanan, Request $request)
-    {
-        $data = $request->all();
-        dd($data);
+    public function store(SuratKeluar $pelayanan,Request $request){
+        dd($request->all());
 
         $data = $request->validate(
             [
@@ -131,8 +82,22 @@ class PelayananAddScreen extends Screen
 
         $pelayanan = Pelayanan::create($data["pelayanan"]);
 
-        Toast::success("Simpan Sukses");
+//        return redirect()->route("platform.warga.pelayanan.cek",$pelayanan->kode_unik);
+    }
 
-        return redirect()->route("platform.warga.pelayanan.cek",$pelayanan->kode_unik);
+    public function pelayanan(SuratKeluar $pelayanan){
+
+        $data = str_replace("'",'"',$pelayanan->atribute);
+
+        if($data == '{"data":[]}'){
+            $data =  json_decode($data);
+            $data_key = [];
+        }else{
+            $data =  json_decode($data);
+            $data =  get_object_vars($data->data);
+            $data_key = array_keys($data);
+        }
+
+        return view("pages.layanan",["pelayanan"=>$pelayanan,"data"=>$data,"data_key" => $data_key]);
     }
 }

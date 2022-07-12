@@ -76,6 +76,16 @@ class PlatformProvider extends OrchidServiceProvider
                 ->title('Desa')
                 ->permission('platform.systems.perangkat'),
 
+            Menu::make('Data Profile Desa')
+                ->icon('info')
+                ->route('platform.profiledesa')
+                ->permission('platform.systems.profiledesa'),
+
+            Menu::make('Data Profile Desa')
+                ->icon('info')
+                ->route('platform.pages')
+                ->permission('platform.systems.pages'),
+
             Menu::make(__('Users'))
                 ->icon('user')
                 ->route('platform.systems.users')
@@ -125,6 +135,8 @@ class PlatformProvider extends OrchidServiceProvider
                 ->addPermission('platform.systems.perangkat', __('Perangkat'))
                 ->addPermission('platform.systems.perangkat.edit', __('Perangkat Edit'))
                 ->addPermission('platform.systems.pelayanan', __('Pelayanan'))
+                ->addPermission('platform.systems.profiledesa', __('Profile Desa'))
+                ->addPermission('platform.systems.pages', __('Page Desa'))
 
             ];
     }

@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+
+/* NAVBAR */
+.nav-item {
+  font-size: 15px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+}
+
+/* JUMBOTRON */
+.jumbo {
+  height: 140px;
+  background-size: cover;
+  position: relative;
+}
+
+.jumbo::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background-color: rgba(194, 0, 41, 0.7) ;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.jumbo .display-4 {
+  text-align: center;
+  margin-top: 10px;
+  color: white;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 44px;
+  position: relative;
+  z-index: 2;
+}
+
+.maps {
+  padding: 4px 4px 0px 4px;
+  background-color: crimson;
+}
+
+/* FOOTER */
+footer {
+  background-color: crimson;
+  color: white;
+  height: 120px;
+  margin-bottom: 0;
+}
+
+footer .container {
+  text-align: center;
+}
+
+.footer-info {
+  padding-top: 10px;
+}
+
+.footer-info p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+}
+
+.socmed-icon {
+  font-size: 18px;
+
+}
+
+.socmed-icon a {
+  text-decoration: none;
+  margin: 15px 20px;
+  color: white;
+}
+
+@media (min-width: 576px) {
+  .jumbo .display-4{
+    margin-top: -20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .jumbo {
+    height: 200px;
+  }
+  
+  .jumbo .display-4 {
+    margin-top: 10px;
+  }
+
+}
+
+@media (min-width: 992px) {
+  /* NAVBAR */
+  .navbar {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+  }
+
+  .nav-link {
+    text-transform: uppercase;
+    margin-right: 20px;
+    font-size: 12px;
+  }
+
+  /* JUMBOTRON */
+  .jumbo {
+    height: 240px;
+  }
+
+  .jumbo .display-4 {
+    margin-top: 60px;
+  }
+
+  .maps {
+    margin-top: 66px;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 50px;
+    height: 70px;
+  }
+
+  footer .container {
+    text-align: left;
+  }
+
+  .footer-info {
+    float: left;
+    font-size: 12px;
+    padding-top: 10px;
+  }
+
+  .socmed-icon {
+    float: right;
+    margin-top: 10px;
+  }
+}
